@@ -1,0 +1,26 @@
+<h1>Productos </h2>
+
+<div id="productCard"></div>
+
+<form id="addProductForm"> 
+ <input placeholder="Title" name="title"/>
+ <input placeholder="Description" name="description"/>
+  <input placeholder="Price" name="price"/>
+  <input placeholder="Thumbnail" name="thumbnail"/>
+  <input placeholder="Code" name="code"/> 
+  <input placeholder="Stock" name="stock"/>
+  <input placeholder="Category" name="category"/>
+  <select name="status">
+  <option value="true">Verdadero</option>
+  <option value="false" >Falso</option>
+  </select>
+  <button type="submit">Agregar Producto</button>
+</form>
+
+<form id="deleteForm" > 
+  <input id="inputId" placeholder="id del producto"/>
+  <button type="submit">Eliminar Producto</button>
+</form>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/realTimeProducts.js"></script>
