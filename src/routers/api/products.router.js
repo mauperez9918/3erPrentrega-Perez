@@ -10,17 +10,23 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/pagination", async (req, res) => {
-  const { limit = 10, page = 1, sort, search } = req.query;
+  const { limit = 10, page = 1, sort, category } = req.query;
   const criteria = {};
   const options = { limit, page };
   if (sort) {
     options.sort = { price: sort };
   }
-  if (search) {
-    criteria.price = search;
+  if (category) {
+    criteria.category = category;
   }
-
-  const result = await productModel.paginate(criteria, options);
+  const url = "http://localhost:8080/api/products/pagination";
+  const result = await ProductManager.getProductsPaginated(
+    criteria,
+    options,
+    sort,
+    category,
+    url
+  );
   res.status(200).json(result);
 });
 

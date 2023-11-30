@@ -49,7 +49,28 @@ export default class ProductManager {
     }
   }
 
-  static async getProductsPaginated() {
-    const products = await productModel.paginate();
+  static async getProductsPaginated(criteria, options, sort, category, url) {
+    const products = await productModel.paginate(criteria, options);
+
+    return {
+      status: "success",
+      payload: products.docs.map((doc) => doc.toJSON()),
+      totalPages: products.totalPages,
+      prevPage: products.prevPage,
+      nextPage: products.nextPage,
+      page: products.page,
+      hasPrevPage: products.hasPrevPage,
+      hasNextPage: products.hasNextPage,
+      prevLink: products.hasPrevPage
+        ? `${url}?limit=${products.limit}&page=${products.prevPage}
+        ${category ? "&category=" + category : ""}
+        ${sort ? "&sort=" + sort : ""}`
+        : null,
+      nextLink: products.hasNextPage
+        ? `${url}?limit=${products.limit}&page=${products.nextPage}
+        ${category ? "&category=" + category : ""}
+        ${sort ? "&sort=" + sort : ""}`
+        : null,
+    };
   }
 }
