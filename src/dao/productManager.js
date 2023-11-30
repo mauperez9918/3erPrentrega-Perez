@@ -48,4 +48,8 @@ export default class ProductManager {
       console.error(`Ha ocurrido un error: ${error.message}`);
     }
   }
+
+  static async getProductsPaginated() {
+    const products = await productModel.paginate();
+  }
 }

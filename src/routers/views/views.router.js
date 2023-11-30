@@ -5,9 +5,9 @@ const router = Router();
 
 router.get("/", async (req, res) => {
   const products = await ProductManager.get();
-  res.render("home", {
+  res.render("products", {
     products: products.map((product) => product.toJSON()),
-    title: "Home",
+    title: "Products",
   });
 });
 
