@@ -15,4 +15,12 @@ const CartSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+CartSchema.pre("find", function () {
+  this.populate("products.product");
+});
+
+CartSchema.pre("findById", function () {
+  this.populate("products.product");
+});
+
 export default mongoose.model("Cart", CartSchema);

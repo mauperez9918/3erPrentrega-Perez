@@ -2,15 +2,18 @@ import cartModel from "./models/cart.model.js";
 
 export default class CartManager {
   static getCarts() {
-    return cartModel.find().populate(`products.product`);
+    return cartModel.find();
   }
 
   static async getProductsInCart(cartId) {
-    const cart = await cartModel.findById(cartId);
-    if (!cart) {
-      throw new Error("Este carrito no existe.");
+    try {
+      const cart = await cartModel
+        .findById(cartId)
+        .populate("products.product");
+      return cart.products;
+    } catch (error) {
+      console.error(`Ha ocurrido un error: ${error.message}`);
     }
-    return cart.products;
   }
 
   static async newCart() {

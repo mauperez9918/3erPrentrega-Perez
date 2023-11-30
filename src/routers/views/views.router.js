@@ -1,9 +1,10 @@
 import { Router } from "express";
 import ProductManager from "../../dao/productManager.js";
+import CartManager from "../../dao/cartsManager.js";
 
 const router = Router();
 
-router.get("/", async (req, res) => {
+router.get("/products", async (req, res) => {
   const { limit = 10, page = 1, sort, category } = req.query;
   const criteria = {};
   const options = { limit, page };
@@ -14,7 +15,7 @@ router.get("/", async (req, res) => {
     criteria.category = category;
   }
 
-  const url = "http://localhost:8080/api/products";
+  const url = "http://localhost:8080/products";
   const result = await ProductManager.getProductsPaginated(
     criteria,
     options,
@@ -31,6 +32,14 @@ router.get("/realtimeproducts", (req, res) => {
 
 router.get("/chat", (req, res) => {
   res.render("chat", {});
+});
+
+router.get("/carts/:cid", async (req, res) => {
+  const { cid } = req.params;
+  const productsInCart = await CartManager.getProductsInCart(cid);
+  res.render("cart", {
+    products: productsInCart.map((product) => product.toJSON()),
+  });
 });
 
 export default router;
