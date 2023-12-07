@@ -27,7 +27,7 @@ router.post("/sessions/register", async (req, res) => {
   });
 
   // res.status(201).json(user);
-  res.redirect("/login");
+  res.redirect("/");
 });
 
 router.post("/sessions/login", async (req, res) => {
@@ -74,7 +74,7 @@ router.post("/sessions/login", async (req, res) => {
 
   // res.status(200).json({ message: "Sesion iniciada correctamente." });
 
-  res.redirect("/profile");
+  res.redirect("/products");
 });
 
 router.get("/sessions/me", async (req, res) => {
@@ -83,6 +83,19 @@ router.get("/sessions/me", async (req, res) => {
   }
 
   res.status(200).json(req.session.user);
+});
+
+router.get("/sessions/logout", async (req, res) => {
+  req.session.destroy((error) => {
+    if (error) {
+      return res.render("error", {
+        title: "Error",
+        messageError: error.message,
+      });
+    }
+  });
+
+  res.redirect("/");
 });
 
 export default router;

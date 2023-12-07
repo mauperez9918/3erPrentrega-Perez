@@ -4,7 +4,7 @@ import CartManager from "../../dao/cartsManager.js";
 
 const router = Router();
 
-router.get("/login", (req, res) => {
+router.get("/", (req, res) => {
   res.render("login", { title: "Login" });
 });
 
@@ -39,7 +39,11 @@ router.get("/products", async (req, res) => {
     category,
     url
   );
-  res.render("products", { title: "Products", ...result });
+  res.render("products", {
+    title: "Products",
+    ...result,
+    user: req.session.user,
+  });
 });
 
 router.get("/realtimeproducts", (req, res) => {

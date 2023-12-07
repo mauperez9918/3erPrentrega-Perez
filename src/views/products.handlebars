@@ -1,19 +1,22 @@
-<h1>Productos</h2>
+<h1>Productos</h1>
+<h2>Bienvenido {{user.first_name}} {{user.last_name}}</h2>
+<p><strong>Email:</strong> {{user.email}}</p>
+<p><strong>Edad:</strong> {{user.age}}</p>
 
 <article>
   <table>
     <tr>
-     <th>title:</th>
-     <th>description:</th>
-     <th>price:</th>
-     <th>thumbnail:</th>
-     <th>code:</th>
-     <th>stock:</th>
-     <th>category:</th>
-     <th>status:</th>
+      <th>title:</th>
+      <th>description:</th>
+      <th>price:</th>
+      <th>thumbnail:</th>
+      <th>code:</th>
+      <th>stock:</th>
+      <th>category:</th>
+      <th>status:</th>
     </tr>
     <tbody>
-        {{#each payload}}
+      {{#each payload}}
         <tr>
           <td>{{this.title}}</td>
           <td>{{this.description}}</td>
@@ -24,14 +27,10 @@
           <td>{{this.category}}</td>
           <td>{{this.status}}</td>
         </tr>
-        {{/each}}
+      {{/each}}
     </tbody>
   </table>
   <p>Pagina actual: {{page}}</p>
   <a href="{{prevLink}}" role="button">Anterior</a>
   <a href="{{nextLink}}" role="button">Siguiente</a>
 </article>
-
-
-
-
