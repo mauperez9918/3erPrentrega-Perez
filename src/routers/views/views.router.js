@@ -4,6 +4,22 @@ import CartManager from "../../dao/cartsManager.js";
 
 const router = Router();
 
+router.get("/login", (req, res) => {
+  res.render("login", { title: "Login" });
+});
+
+router.get("/register", (req, res) => {
+  res.render("register", { title: "Registro" });
+});
+
+router.get("/profile", (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/login");
+  } else {
+    res.render("profile", { title: "Perfil", user: req.session.user });
+  }
+});
+
 router.get("/products", async (req, res) => {
   const { limit = 10, page = 1, sort, category } = req.query;
   const criteria = {};
