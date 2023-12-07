@@ -18,7 +18,7 @@ router.post("/sessions/register", async (req, res) => {
     });
   }
 
-  const user = await UserModel.create({
+  await UserModel.create({
     first_name,
     last_name,
     password,
@@ -43,6 +43,18 @@ router.post("/sessions/login", async (req, res) => {
       title: "Error",
       messageError: "Todos los campos son requeridos",
     });
+  }
+
+  if (email === "adminCoder@coder.com" && password === "adminCod3r123") {
+    req.session.user = {
+      first_name: "Coder",
+      last_name: "House",
+      email: "adminCoder@coder.com",
+      age: "55",
+      role: "Admin",
+    };
+
+    res.redirect("/products");
   }
 
   const user = await UserModel.findOne({ email });
@@ -70,6 +82,7 @@ router.post("/sessions/login", async (req, res) => {
     last_name,
     email,
     age,
+    role: "Usuario",
   };
 
   // res.status(200).json({ message: "Sesion iniciada correctamente." });
