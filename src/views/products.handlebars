@@ -1,12 +1,16 @@
-<h1>Productos</h1>
-<h2>Bienvenido {{user.first_name}} {{user.last_name}}</h2>
-<p><strong>Email:</strong> {{user.email}}</p>
-<p><strong>Rol:</strong> {{user.role}}</p>
-<p><strong>Edad:</strong> {{user.age}}</p>
-<a href="/profile" role="button">Ver perfil</a>
+<div>
+  <h1>Productos</h1>
+  <h2>Bienvenido {{user.first_name}} {{user.last_name}}</h2>
+  <p><strong>Email:</strong> {{user.email}}</p>
+  <p><strong>Rol:</strong> {{user.role}}</p>
+  <p><strong>Edad:</strong> {{user.age}}</p>
+  <a href="/profile" role="button">Ver perfil</a>
+</div>
 
-<article>
+<article style="padding: 20px;">
+
   <table>
+
     <tr>
       <th>title:</th>
       <th>description:</th>
@@ -17,6 +21,7 @@
       <th>category:</th>
       <th>status:</th>
     </tr>
+
     <tbody>
       {{#each payload}}
         <tr>
@@ -29,12 +34,45 @@
           <td>{{this.category}}</td>
           <td>{{this.status}}</td>
           <td><button>Agregar al carrito</button></td>
-
         </tr>
       {{/each}}
     </tbody>
+
   </table>
   <p>Pagina actual: {{page}}</p>
-  <a href="{{prevLink}}" role="button">Anterior</a>
-  <a href="{{nextLink}}" role="button">Siguiente</a>
+
+  <div style="width: 80%; display: flex; gap: 5px; margin: 0 auto;">
+    <a
+      style="width: auto; height: 65px;"
+      href="{{prevLink}}"
+      role="button"
+    >Anterior</a>
+    <a
+      style="width: auto; height: 65px;"
+      href="{{nextLink}}"
+      role="button"
+    >Siguiente</a>
+
+    <select name="categories" id="categories">
+      <option disabled selected>Categoria</option>
+      <option value="all">Sin Filtro</option>
+      <option value="category1">Category 1</option>
+      <option value="category2">Category 2</option>
+    </select>
+
+    <select name="status" id="status">
+      <option disabled selected>Estado</option>
+      <option value="true">Verdadero</option>
+      <option value="false">Falso</option>
+    </select>
+
+    <select name="price" id="price">
+      <option disabled selected>Precio</option>
+      <option value="asc">Ascendente</option>
+      <option value="desc">Descendente</option>
+    </select>
+  </div>
+
 </article>
+
+<script src="/js/products.js"></script>

@@ -49,8 +49,29 @@ export default class ProductManager {
     }
   }
 
-  static async getProductsPaginated(criteria, options, sort, category, url) {
+  static async getProductsPaginated(
+    criteria,
+    options,
+    sort,
+    category,
+    url,
+    status
+  ) {
     const products = await productModel.paginate(criteria, options);
+    let categoryQuery = "";
+    let sortQuery = "";
+    let statusQuery = "";
+    if (category) {
+      categoryQuery = `&category=${category}`;
+    }
+
+    if (sort) {
+      sortQuery = `&sort=${sort}`;
+    }
+
+    if (status) {
+      statusQuery = `&status=${status}`;
+    }
 
     return {
       status: "success",
@@ -62,14 +83,10 @@ export default class ProductManager {
       hasPrevPage: products.hasPrevPage,
       hasNextPage: products.hasNextPage,
       prevLink: products.hasPrevPage
-        ? `${url}?limit=${products.limit}&page=${products.prevPage}
-        ${category ? "&category=" + category : ""}
-        ${sort ? "&sort=" + sort : ""}`
+        ? `${url}?limit=${products.limit}&page=${products.prevPage}${categoryQuery}${sortQuery}${statusQuery}`
         : null,
       nextLink: products.hasNextPage
-        ? `${url}?limit=${products.limit}&page=${products.nextPage}
-        ${category ? "&category=" + category : ""}
-        ${sort ? "&sort=" + sort : ""}`
+        ? `${url}?limit=${products.limit}&page=${products.nextPage}${categoryQuery}${sortQuery}${statusQuery}`
         : null,
     };
   }

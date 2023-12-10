@@ -32,14 +32,19 @@ router.get("/products", async (req, res) => {
   if (!req.session.user) {
     return res.redirect("/");
   }
-  const { limit = 10, page = 1, sort, category } = req.query;
+  const { limit = 10, page = 1, sort, category, status } = req.query;
   const criteria = {};
   const options = { limit, page };
   if (sort) {
     options.sort = { price: sort };
   }
+
   if (category) {
     criteria.category = category;
+  }
+
+  if (status) {
+    criteria.status = status;
   }
 
   const url = "http://localhost:8080/products";
@@ -48,8 +53,20 @@ router.get("/products", async (req, res) => {
     options,
     sort,
     category,
-    url
+    url,
+    status
   );
+
+  if (isNaN(limit) || isNaN(page)) {
+    return res.status(404).json({
+      message: "El caracter introducido como limit o page debe ser un numero.",
+    });
+  }
+
+  if (page > result.totalPages) {
+    return res.status(404).json({ message: "Esta pagina no existe" });
+  }
+
   res.render("products", {
     title: "Products",
     ...result,
