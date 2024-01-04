@@ -5,7 +5,7 @@ import CartManager from "../../dao/cartsManager.js";
 const router = Router();
 
 router.get("/", (req, res) => {
-  if (req.session.user) {
+  if (req.user) {
     return res.redirect("/products");
   } else {
     res.render("login", { title: "Login" });
@@ -13,7 +13,7 @@ router.get("/", (req, res) => {
 });
 
 router.get("/register", (req, res) => {
-  if (req.session.user) {
+  if (req.user) {
     return res.redirect("/products");
   } else {
     res.render("register", { title: "Registro" });
@@ -21,15 +21,18 @@ router.get("/register", (req, res) => {
 });
 
 router.get("/profile", (req, res) => {
-  if (!req.session.user) {
+  if (!req.user) {
     return res.redirect("/");
   } else {
-    res.render("profile", { title: "Perfil", user: req.session.user });
+    res.render("profile", {
+      title: "Perfil",
+      user: req.user._id == "admin" ? req.user : req.user.toJSON(),
+    });
   }
 });
 
 router.get("/products", async (req, res) => {
-  if (!req.session.user) {
+  if (!req.user) {
     return res.redirect("/");
   }
   const { limit = 10, page = 1, sort, category, status } = req.query;
@@ -70,7 +73,7 @@ router.get("/products", async (req, res) => {
   res.render("products", {
     title: "Products",
     ...result,
-    user: req.session.user,
+    user: req.user._id == "admin" ? req.user : req.user.toJSON(),
   });
 });
 

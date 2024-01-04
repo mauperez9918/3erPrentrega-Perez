@@ -2,7 +2,9 @@
   <h1>Productos</h1>
   <h2>Bienvenido {{user.first_name}} {{user.last_name}}</h2>
   <p><strong>Email:</strong> {{user.email}}</p>
-  <p><strong>Rol:</strong> {{user.role}}</p>
+  <p><strong>Role:{{user.role}}</strong>{{#unless
+      user.role
+    }}Usuario{{/unless}}</p>
   <p><strong>Edad:</strong> {{user.age}}</p>
   <a href="/profile" role="button">Ver perfil</a>
 </div>
