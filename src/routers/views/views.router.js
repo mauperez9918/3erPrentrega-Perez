@@ -1,6 +1,7 @@
 import { Router } from "express";
-import ProductManager from "../../dao/productManager.js";
-import CartManager from "../../dao/cartsManager.js";
+import ProductManager from "../../controllers/productController.js";
+import CartManager from "../../controllers/cartsController.js";
+import { authMiddleware } from "../../utils.js";
 
 const router = Router();
 
@@ -20,18 +21,18 @@ router.get("/register", (req, res) => {
   }
 });
 
-router.get("/profile", (req, res) => {
+router.get("/profile", authMiddleware("jwt"), async (req, res) => {
   if (!req.user) {
     return res.redirect("/");
   } else {
     res.render("profile", {
       title: "Perfil",
-      user: req.user._id == "admin" ? req.user : req.user.toJSON(),
+      user: req.user,
     });
   }
 });
 
-router.get("/products", async (req, res) => {
+router.get("/products", authMiddleware("jwt"), async (req, res) => {
   if (!req.user) {
     return res.redirect("/");
   }
@@ -73,7 +74,7 @@ router.get("/products", async (req, res) => {
   res.render("products", {
     title: "Products",
     ...result,
-    user: req.user._id == "admin" ? req.user : req.user.toJSON(),
+    user: req.user,
   });
 });
 
