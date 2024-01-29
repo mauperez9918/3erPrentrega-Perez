@@ -1,6 +1,6 @@
-import cartModel from "../dao/models/cart.model.js";
+import cartModel from "./models/cart.model.js";
 
-export default class CartManager {
+export default class CartsDao {
   static getCarts() {
     return cartModel.find();
   }
@@ -66,13 +66,20 @@ export default class CartManager {
 
   static async updateProductQuantity(cartId, pid, quantity) {
     let cart = await cartModel.findById(cartId);
-    let findProduct = cart.products.find((product) => product._id == pid);
+
+    if (!cart) {
+      throw new Error("Carrito no encontrado.");
+    }
+
+    let findProduct = cart.products.find(
+      (product) => product.product._id == pid
+    );
+
     if (findProduct) {
-      console.log(findProduct.quantity);
       findProduct.quantity = quantity;
       await cartModel.updateOne({ _id: cartId }, { $set: cart });
     } else {
-      console.log("El producto no existe.");
+      throw new Error("El producto no existe en el carrito.");
     }
   }
 

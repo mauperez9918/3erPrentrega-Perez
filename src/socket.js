@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
-import ProductManager from "./controllers/productController.js";
-import MessageManager from "./controllers/messageController.js";
+import ProductManager from "./dao/product.dao.js";
+import MessageManager from "./dao/message.dao.js";
 
 export const socketInit = (httpServer) => {
   const socketServer = new Server(httpServer);

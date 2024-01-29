@@ -39,20 +39,39 @@ export const authMiddleware = (strategy) => (req, res, next) => {
         .json({ message: info.message ? info.message : info.toString() });
     }
     req.user = payload;
+
     next();
   })(req, res, next);
 };
 
-// export const verifyToken = (token) => {
-//   return new Promise((resolve, reject) => {
-//     jwt.verify(token, JWT_SECRET, (error, payload) => {
-//       if (error) {
-//         return reject(false);
-//       }
-//       resolve(payload);
-//     });
-//   });
-// };
+export const handlePolicies =
+  ([policies]) =>
+  async (req, res, next) => {
+    if (policies.includes("PUBLIC")) {
+      return next();
+    }
+
+    const { token } = req.cookies;
+
+    const user = await verifyToken(token);
+
+    if (!policies.includes(user.role.toUpperCase())) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    next();
+  };
+
+export const verifyToken = (token) => {
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, config.jwtSecret, (error, payload) => {
+      if (error) {
+        return reject(false);
+      }
+      resolve(payload);
+    });
+  });
+};
 
 // const authToken = (req, res, next) => {
 //   const authHeader = req.headers.authorization;

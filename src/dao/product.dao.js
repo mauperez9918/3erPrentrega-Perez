@@ -1,6 +1,6 @@
-import productModel from "../dao/models/product.model.js";
+import productModel from "./models/products.model.js";
 
-export default class ProductManager {
+export default class ProductsDao {
   static get() {
     return productModel.find();
   }
@@ -9,7 +9,6 @@ export default class ProductManager {
     const product = await productModel.findById(id);
     if (!product) {
       throw new Error("Producto no encontrado");
-      s;
     }
     return product;
   }
