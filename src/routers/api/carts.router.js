@@ -6,6 +6,7 @@ import {
   getCarts,
   getProductsInCart,
   newCart,
+  purchase,
   updateInCartProduct,
 } from "../../controllers/carts.controller.js";
 import { handlePolicies } from "../../utils.js";
@@ -13,6 +14,8 @@ import { handlePolicies } from "../../utils.js";
 const router = Router();
 
 router.get("/", getCarts);
+
+router.get("/:cid/purchase", purchase);
 
 router.post("/", newCart);
 

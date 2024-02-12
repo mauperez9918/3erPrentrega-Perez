@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import passport from "passport";
 import config from "./config/config.js";
+import { faker } from "@faker-js/faker";
 
 const __filename = url.fileURLToPath(import.meta.url);
 export const __dirname = path.dirname(__filename);
@@ -44,34 +45,46 @@ export const authMiddleware = (strategy) => (req, res, next) => {
   })(req, res, next);
 };
 
-export const handlePolicies =
-  ([policies]) =>
-  async (req, res, next) => {
-    if (policies.includes("PUBLIC")) {
-      return next();
-    }
+export const handlePolicies = (policies) => (req, res, next) => {
+  if (policies.includes("PUBLIC")) {
+    return next();
+  }
 
-    const { token } = req.cookies;
+  const { user } = req;
 
-    const user = await verifyToken(token);
+  if (!policies.includes(user.role.toUpperCase())) {
+    console.log(policies);
+    return res.status(401).json({ message: "Unauthorized" });
+  }
 
-    if (!policies.includes(user.role.toUpperCase())) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
-    next();
-  };
-
-export const verifyToken = (token) => {
-  return new Promise((resolve, reject) => {
-    jwt.verify(token, config.jwtSecret, (error, payload) => {
-      if (error) {
-        return reject(false);
-      }
-      resolve(payload);
-    });
-  });
+  next();
 };
+
+export const generateProduct = () => {
+  return {
+    id: faker.database.mongodbObjectId(),
+    title: faker.commerce.productName(),
+    description: faker.commerce.productDescription(),
+    price: faker.commerce.price(),
+    thumbnail: faker.image.url(),
+    code: faker.string.alphanumeric({ length: 8 }),
+    stock: faker.number.int({ min: 10000, max: 100000 }),
+    category: faker.commerce.department(),
+    status: faker.datatype.boolean(0.5),
+    datatime: faker.date.birthdate(),
+  };
+};
+
+// export const verifyToken = (token) => {
+//   return new Promise((resolve, reject) => {
+//     jwt.verify(token, config.jwtSecret, (error, payload) => {
+//       if (error) {
+//         return reject(false);
+//       }
+//       resolve(payload);
+//     });
+//   });
+// };
 
 // const authToken = (req, res, next) => {
 //   const authHeader = req.headers.authorization;

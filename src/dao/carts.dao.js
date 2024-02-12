@@ -19,7 +19,6 @@ export default class CartsDao {
   static async newCart() {
     try {
       const cart = await cartModel.create({});
-      console.log("Carrito creado correctamente.");
       return cart;
     } catch (error) {
       console.error(`Ha ocurrido un error: ${error.message}`);
@@ -41,7 +40,7 @@ export default class CartsDao {
         await cartModel.updateOne({ _id: cartId }, { $set: cart });
       }
     } catch (error) {
-      console.error(`Ha ocurrido un error: ${error.message}`);
+      throw new Error(`Ha ocurrido un error: ${error.message}`);
     }
   }
 
@@ -92,4 +91,9 @@ export default class CartsDao {
       console.error(`Ha ocurrido un error: ${error.message}`);
     }
   }
+
+  // static async purchase(cid) {
+  //   let cart = await cartModel.findById(cid);
+  //   console.log(cart);
+  // }
 }

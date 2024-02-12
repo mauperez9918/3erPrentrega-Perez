@@ -12,6 +12,7 @@
   "license": "ISC",
   "description": "primera practica integradora",
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "nodemon": "^3.0.1"
   },
   "dependencies": {

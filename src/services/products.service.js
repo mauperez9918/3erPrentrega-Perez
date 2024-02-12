@@ -1,16 +1,24 @@
 import ProductsDao from "../dao/product.dao.js";
+import { generateProduct } from "../utils.js";
 
 export default class Productsservice {
   static async getProducts() {
     return await ProductsDao.get();
   }
 
-  static async getById(id) {
-    return await ProductsDao.getById(id);
+  static async getById(params) {
+    const { pid } = params;
+    const product = await ProductsDao.getById(pid);
+    if (!product) {
+      throw new Error("Producto no encontrado");
+    }
+    return product;
   }
 
   static async addProduct(data) {
-    return await ProductsDao.addProduct(data);
+    const product = await ProductsDao.addProduct(data);
+    console.log("Producto creado correctamente.");
+    return product;
   }
 
   static async updateProduct(id, data) {
@@ -39,6 +47,15 @@ export default class Productsservice {
       category,
       url
     );
+    return result;
+  }
+
+  static async mockingProducts() {
+    let result = [];
+    for (let i = 0; i < 100; i++) {
+      const generatedProduct = generateProduct();
+      result.push(generatedProduct);
+    }
     return result;
   }
 }

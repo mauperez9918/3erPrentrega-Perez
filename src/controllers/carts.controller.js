@@ -66,3 +66,12 @@ export const updateInCartProduct = async (req, res) => {
     res.status(500).json(error.message);
   }
 };
+
+export const purchase = async (req, res) => {
+  try {
+    const ticket = await CartsService.purchase(req.body);
+    res.status(200).json(ticket);
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+};

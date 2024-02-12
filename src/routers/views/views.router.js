@@ -24,7 +24,7 @@ router.get("/register", (req, res) => {
 router.get(
   "/profile",
   authMiddleware("jwt"),
-  handlePolicies(["USER, ADMIN"]),
+  handlePolicies(["USER", "ADMIN"]),
   async (req, res) => {
     if (!req.user) {
       return res.redirect("/");
@@ -40,7 +40,7 @@ router.get(
 router.get(
   "/products",
   authMiddleware("jwt"),
-  handlePolicies(["USER, ADMIN"]),
+  handlePolicies(["USER", "ADMIN"]),
   async (req, res) => {
     if (!req.user) {
       return res.redirect("/");

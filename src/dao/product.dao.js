@@ -5,22 +5,12 @@ export default class ProductsDao {
     return productModel.find();
   }
 
-  static async getById(id) {
-    const product = await productModel.findById(id);
-    if (!product) {
-      throw new Error("Producto no encontrado");
-    }
-    return product;
+  static async getById(pid) {
+    return await productModel.findById(pid);
   }
 
   static async addProduct(data) {
-    try {
-      const product = await productModel.create(data);
-      console.log("Producto creado correctamente.");
-      return product;
-    } catch (error) {
-      console.error(`Ha ocurrido un error: ${error.message}`);
-    }
+    return productModel.create(data);
   }
 
   static async updateById(pid, data) {

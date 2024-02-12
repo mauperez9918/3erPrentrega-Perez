@@ -5,6 +5,7 @@ import {
   getProductById,
   getProducts,
   getProductsPaginated,
+  mockingProducts,
   updateProduct,
 } from "../../controllers/products.controller.js";
 import { handlePolicies } from "../../utils.js";
@@ -12,6 +13,8 @@ import { handlePolicies } from "../../utils.js";
 const router = Router();
 
 router.get("/", getProducts);
+
+router.get("/mockingproducts", mockingProducts);
 
 router.get("/pagination", getProductsPaginated);
 

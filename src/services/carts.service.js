@@ -38,4 +38,9 @@ export default class CartsService {
     const { quantity } = dataBody;
     return await CartsDao.updateProductQuantity(cid, pid, quantity);
   }
+
+  static async purchase(data) {
+    const { cid } = data;
+    return await CartsDao.purchase(cid);
+  }
 }

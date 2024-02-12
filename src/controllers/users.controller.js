@@ -1,5 +1,4 @@
 import UserService from "../services/users.service.js";
-import { verifyToken } from "../utils.js";
 
 export const userRegister = async (req, res) => {
   try {

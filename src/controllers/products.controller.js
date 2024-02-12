@@ -53,3 +53,12 @@ export const getProductsPaginated = async (req, res) => {
     res.status(500).json(error.message);
   }
 };
+
+export const mockingProducts = (req, res) => {
+  try {
+    const result = Productsservice.mockingProducts();
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+};
