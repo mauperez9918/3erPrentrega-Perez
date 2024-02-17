@@ -19,6 +19,7 @@ deleteForm.addEventListener("submit", (e) => {
   } else {
     socket.emit("deleteProduct", input.value);
   }
+
   input.value = "";
 });
 

@@ -9,7 +9,7 @@ import {
   purchase,
   updateInCartProduct,
 } from "../../controllers/carts.controller.js";
-import { handlePolicies } from "../../utils.js";
+import { authMiddleware, handlePolicies } from "../../utils/utils.js";
 
 const router = Router();
 
@@ -21,7 +21,12 @@ router.post("/", newCart);
 
 router.get("/:cid", getProductsInCart);
 
-router.post("/:cid/products/:pid", handlePolicies(["USER"]), addProductToCart);
+router.post(
+  "/:cid/products/:pid",
+  authMiddleware("jwt"),
+  handlePolicies(["USER"]),
+  addProductToCart
+);
 
 router.delete("/:cid/products/:pid", deleteToCart);
 

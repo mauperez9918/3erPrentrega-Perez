@@ -6,7 +6,7 @@ export default class ProductsDao {
   }
 
   static async getById(pid) {
-    return await productModel.findById(pid);
+    return await productModel.findById({ _id: pid });
   }
 
   static async addProduct(data) {
@@ -14,20 +14,7 @@ export default class ProductsDao {
   }
 
   static async updateById(pid, data) {
-    try {
-      const product = await productModel.getById(pid);
-    } catch (error) {
-      console.error(`Ha ocurrido un error: ${error.message}`);
-    }
-
-    if (product) {
-      try {
-        await productModel.updateOne({ _id: pid }, { $set: data });
-        console.log("Producto actualizado correctamente.");
-      } catch (error) {
-        console.error(`Ha ocurrido un error: ${error.message}`);
-      }
-    }
+    await productModel.updateOne({ _id: pid }, { $set: data });
   }
 
   static async deleteById(pid) {

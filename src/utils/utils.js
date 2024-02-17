@@ -3,10 +3,11 @@ import url from "url";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import passport from "passport";
-import config from "./config/config.js";
+import config from "../config/config.js";
 import { faker } from "@faker-js/faker";
 
-const __filename = url.fileURLToPath(import.meta.url);
+const __filename = path.join(url.fileURLToPath(import.meta.url), "../");
+
 export const __dirname = path.dirname(__filename);
 
 export const createHash = (password) =>
@@ -53,7 +54,6 @@ export const handlePolicies = (policies) => (req, res, next) => {
   const { user } = req;
 
   if (!policies.includes(user.role.toUpperCase())) {
-    console.log(policies);
     return res.status(401).json({ message: "Unauthorized" });
   }
 

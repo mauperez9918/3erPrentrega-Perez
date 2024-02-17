@@ -1,7 +1,7 @@
 import { Router } from "express";
 import ProductManager from "../../dao/product.dao.js";
 import CartManager from "../../dao/carts.dao.js";
-import { authMiddleware, handlePolicies } from "../../utils.js";
+import { authMiddleware, handlePolicies } from "../../utils/utils.js";
 
 const router = Router();
 
@@ -89,13 +89,23 @@ router.get(
   }
 );
 
-router.get("/realtimeproducts", handlePolicies(["ADMIN"]), (req, res) => {
-  res.render("realTimeProducts", {});
-});
+router.get(
+  "/realtimeproducts",
+  authMiddleware("jwt"),
+  handlePolicies(["ADMIN"]),
+  (req, res) => {
+    res.render("realTimeProducts", {});
+  }
+);
 
-router.get("/chat", handlePolicies(["USER"]), (req, res) => {
-  res.render("chat", {});
-});
+router.get(
+  "/chat",
+  authMiddleware("jwt"),
+  handlePolicies(["USER"]),
+  (req, res) => {
+    res.render("chat", {});
+  }
+);
 
 router.get("/carts/:cid", async (req, res) => {
   const { cid } = req.params;

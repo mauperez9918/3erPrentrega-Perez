@@ -8,7 +8,7 @@ import {
   mockingProducts,
   updateProduct,
 } from "../../controllers/products.controller.js";
-import { handlePolicies } from "../../utils.js";
+import { authMiddleware, handlePolicies } from "../../utils/utils.js";
 
 const router = Router();
 
@@ -20,10 +20,20 @@ router.get("/pagination", getProductsPaginated);
 
 router.get("/:pid", getProductById);
 
-router.post("/", handlePolicies(["ADMIN"]), addProduct);
+router.post("/", authMiddleware("jwt"), handlePolicies(["ADMIN"]), addProduct);
 
-router.put("/:pid", handlePolicies(["ADMIN"]), updateProduct);
+router.put(
+  "/:pid",
+  authMiddleware("jwt"),
+  handlePolicies(["ADMIN"]),
+  updateProduct
+);
 
-router.delete("/:pid", handlePolicies(["ADMIN"]), deleteById);
+router.delete(
+  "/:pid",
+  authMiddleware("jwt"),
+  handlePolicies(["ADMIN"]),
+  deleteById
+);
 
 export default router;

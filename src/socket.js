@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
-import ProductManager from "./dao/product.dao.js";
-import MessageManager from "./dao/message.dao.js";
+import ProductsDao from "./dao/product.dao.js";
+import MessageDao from "./dao/message.dao.js";
 
 export const socketInit = (httpServer) => {
   const socketServer = new Server(httpServer);
@@ -8,24 +8,24 @@ export const socketInit = (httpServer) => {
   socketServer.on("connection", async (socket) => {
     console.log(`Nuevo cliente socket conectado ${socket.id}`);
 
-    socket.emit("update-messages", await MessageManager.getMessages());
+    socket.emit("update-messages", await MessageDao.getMessages());
 
     socket.on("new-message", async (newMessage) => {
-      await MessageManager.createMessage(newMessage);
-      socketServer.emit("update-messages", await MessageManager.getMessages());
+      await MessageDao.createMessage(newMessage);
+      socketServer.emit("update-messages", await MessageDao.getMessages());
     });
 
-    socket.emit("getProducts", await ProductManager.get());
+    socket.emit("getProducts", await ProductsDao.get());
 
     socket.on("deleteProduct", async (id) => {
-      await ProductManager.deleteById(id);
-      socket.emit("getProducts", await ProductManager.get());
+      await ProductsDao.deleteById(id);
+      socket.emit("getProducts", await ProductsDao.get());
     });
 
     socket.on("addProduct", async (data) => {
-      await ProductManager.addProduct(data);
+      await ProductsDao.addProduct(data);
 
-      socket.emit("getProducts", await ProductManager.get());
+      socket.emit("getProducts", await ProductsDao.get());
     });
   });
 };

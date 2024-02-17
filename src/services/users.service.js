@@ -1,13 +1,21 @@
 import UsersDao from "../dao/users.dao.js";
-import { createHash, generateToken, isValidPassword } from "../utils.js";
+import { createHash, generateToken, isValidPassword } from "../utils/utils.js";
 import config from "../config/config.js";
+import { generateUserError } from "../utils/CauseMessageError.js";
+import { CustomError } from "../utils/CustomError.js";
+import EnumsError from "../utils/EnumsError.js";
 
 export default class UsersService {
   static async register(userData) {
     const { first_name, last_name, email, password, age } = userData;
 
     if (!first_name || !last_name) {
-      throw new Error("Todos los campos son requeridos");
+      CustomError.create({
+        name: "Invalid data user",
+        cause: generateUserError(userData),
+        message: "Ocurrio un error mientras intentamos crear un nuevo usuario.",
+        code: EnumsError.BAD_REQUEST_ERROR,
+      });
     }
 
     const user = await UsersDao.findUserByEmail(email);

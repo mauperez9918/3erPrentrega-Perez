@@ -1,5 +1,5 @@
 import ProductsDao from "../dao/product.dao.js";
-import { generateProduct } from "../utils.js";
+import { generateProduct } from "../utils/utils.js";
 
 export default class Productsservice {
   static async getProducts() {
@@ -21,12 +21,21 @@ export default class Productsservice {
     return product;
   }
 
-  static async updateProduct(id, data) {
-    return await ProductsDao.updateById(id, data);
+  static async updateProduct(params, data) {
+    const { pid } = params;
+    const product = await ProductsDao.getById(pid);
+
+    if (product) {
+      await ProductsDao.updateById(pid, data);
+      console.log("Producto actualizado correctamente.");
+    } else {
+      throw new Error("Su producto no existe.");
+    }
   }
 
-  static async deleteById(id, data) {
-    return await ProductsDao.deleteById(id, data);
+  static async deleteById(params) {
+    const { pid } = params;
+    return await ProductsDao.deleteById(pid);
   }
 
   static async getProductsPaginated() {

@@ -10,12 +10,13 @@ categoriesSelect.addEventListener("change", (e) => {
   } else {
     url.searchParams.set("category", e.target.value);
   }
+
   window.location.href = url.toString();
 });
 
 statusSelect.addEventListener("change", (e) => {
   let url = new URL(window.location.href);
-
+  console.log(url);
   url.searchParams.set("status", e.target.value);
 
   window.location.href = url.toString();

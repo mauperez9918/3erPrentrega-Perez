@@ -18,13 +18,28 @@ export default class CartsService {
   static async addProductToCart(data) {
     const { cid, pid } = data;
 
-    return await CartsDao.addProductToCart(cid, pid);
+    const cart = await CartsDao.getCartById(cid);
+    const productFound = cart.products.find(
+      (element) => element.product == pid
+    );
+
+    await CartsDao.addProductToCart(cid, pid, productFound, cart);
   }
 
   static async deleteToCart(data) {
     const { cid, pid } = data;
 
-    return await CartsDao.deleteProductCart(cid, pid);
+    let cart = await CartsDao.getCartById(cid);
+
+    const findProduct = cart.products.find((elem) => elem.product == pid);
+    if (findProduct) {
+      let filterProducts = cart.products.filter((elem) => elem.product != pid);
+      cart.products = filterProducts;
+      console.log("Su producto ha sido eliminado correctamente.");
+      return await CartsDao.deleteProductCart(cid, cart);
+    } else {
+      console.log("Su producto no se encuentra en el carrito.");
+    }
   }
 
   static async deleteAllProducts(data) {
@@ -36,7 +51,24 @@ export default class CartsService {
   static async updateInCartProduct(params, dataBody) {
     const { cid, pid } = params;
     const { quantity } = dataBody;
-    return await CartsDao.updateProductQuantity(cid, pid, quantity);
+
+    let cart = await CartsDao.getCartById(cid);
+
+    if (!cart) {
+      throw new Error("Carrito no encontrado.");
+    }
+
+    let findProduct = cart.products.find(
+      (product) => product.product._id == pid
+    );
+
+    if (findProduct) {
+      findProduct.quantity = quantity;
+
+      return await CartsDao.updateProductQuantity(cid, cart);
+    } else {
+      throw new Error("El producto no existe en el carrito.");
+    }
   }
 
   static async purchase(data) {
