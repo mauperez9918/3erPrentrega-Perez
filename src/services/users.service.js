@@ -9,7 +9,7 @@ export default class UsersService {
   static async register(userData) {
     const { first_name, last_name, email, password, age } = userData;
 
-    if (!first_name || !last_name) {
+    if (!first_name || !email || !password) {
       CustomError.create({
         name: "Invalid data user",
         cause: generateUserError(userData),

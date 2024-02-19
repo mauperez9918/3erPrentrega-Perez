@@ -9,10 +9,12 @@ import path from "path";
 import cookieParser from "cookie-parser";
 import passport from "passport";
 import initializePassport from "./config/passaport.js";
-import { errorHandlerMiddleware } from "./middlewares/error-handler.middleware.js";
+import errorHandlerMiddleware from "./middlewares/error-handler.middleware.js";
+import { addLogger } from "./config/logger.js";
 
 const app = express();
 
+app.use(addLogger);
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -30,11 +32,5 @@ app.use("/api/products", productsApiRouter);
 app.use("/api/carts", cartsApiRouter);
 app.use("/api/auth", authApiRouter);
 app.use(errorHandlerMiddleware);
-
-// app.use((error, req, res, next) => {
-//   const message = `Ha ocurrido un error desconocido: ${error.message}`;
-//   console.error(message);
-//   res.status(500).json({ message });
-// });
 
 export default app;

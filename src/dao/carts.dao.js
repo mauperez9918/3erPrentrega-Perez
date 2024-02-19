@@ -10,23 +10,12 @@ export default class CartsDao {
   }
 
   static async getProductsInCart(cartId) {
-    try {
-      const cart = await cartModel
-        .findById(cartId)
-        .populate("products.product");
-      return cart.products;
-    } catch (error) {
-      console.error(`Ha ocurrido un error: ${error.message}`);
-    }
+    const cart = await cartModel.findById(cartId).populate("products.product");
+    return cart.products;
   }
 
   static async newCart() {
-    try {
-      const cart = await cartModel.create({});
-      return cart;
-    } catch (error) {
-      console.error(`Ha ocurrido un error: ${error.message}`);
-    }
+    return await cartModel.create({});
   }
 
   static async addProductToCart(cartId, pid, productFound, cart) {

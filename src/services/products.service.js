@@ -1,4 +1,7 @@
 import ProductsDao from "../dao/product.dao.js";
+import { generateProductError } from "../utils/CauseMessageError.js";
+import { CustomError } from "../utils/CustomError.js";
+import EnumsError from "../utils/EnumsError.js";
 import { generateProduct } from "../utils/utils.js";
 
 export default class Productsservice {
@@ -16,6 +19,24 @@ export default class Productsservice {
   }
 
   static async addProduct(data) {
+    const { title, description, price, thumbnail, code, stock, category } =
+      data;
+    if (
+      !title ||
+      !description ||
+      !price ||
+      !thumbnail ||
+      !code ||
+      !stock ||
+      !category
+    ) {
+      CustomError.create({
+        name: "Invalid product data",
+        cause: generateProductError(data),
+        message: "Ocurrio un error mientras intentamos crear el producto.",
+        code: EnumsError.BAD_REQUEST_ERROR,
+      });
+    }
     const product = await ProductsDao.addProduct(data);
     console.log("Producto creado correctamente.");
     return product;

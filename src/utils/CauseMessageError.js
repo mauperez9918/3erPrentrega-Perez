@@ -1,3 +1,17 @@
+export const generateProductError = (data) => {
+  return `Todos los campos son requeridos
+Lista de campos requeridos:
+
+-title: ${data.title},
+-description: ${data.description},
+-price: ${data.price},
+-thumbnail: ${data.thumbnail},
+-code: ${data.code},
+-stock: ${data.stock},
+-category: ${data.category},
+`;
+};
+
 export const generateUserError = (data) => {
   return `Todos los campos son requeridos
 Lista de campos requeridos:
@@ -6,9 +20,3 @@ Lista de campos requeridos:
 -email: ${data.email},
 `;
 };
-
-// export const generateUserIdError = (id) => {
-//   return `Se debe enviar un identificador valido
-//     -Valor recibido: ${id}
-//     `;
-// };

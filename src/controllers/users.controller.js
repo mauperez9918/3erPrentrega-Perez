@@ -1,11 +1,11 @@
 import UserService from "../services/users.service.js";
 
-export const userRegister = async (req, res) => {
+export const userRegister = async (req, res, next) => {
   try {
     await UserService.register(req.body);
     res.status(201).redirect("/");
   } catch (error) {
-    res.status(500).json(error.message);
+    next(error);
   }
 };
 

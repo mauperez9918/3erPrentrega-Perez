@@ -18,12 +18,12 @@ export const getProductById = async (req, res) => {
   }
 };
 
-export const addProduct = async (req, res) => {
+export const addProduct = async (req, res, next) => {
   try {
     const product = await Productsservice.addProduct(req.body);
     res.status(201).json(product);
   } catch (error) {
-    res.status(500).json(error.message);
+    next(error);
   }
 };
 

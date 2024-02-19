@@ -1,6 +1,6 @@
 import Errors from "../utils/EnumsError.js";
 
-export const errorHandlerMiddleware = (error, req, res, next) => {
+export default (error, req, res, next) => {
   console.error(error.cause || error.message);
 
   switch (error.code) {
