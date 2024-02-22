@@ -16,7 +16,7 @@ export const createHash = (password) =>
 export const isValidPassword = (user, password) =>
   bcrypt.compareSync(password, user.password);
 
-export const generateToken = (user) => {
+export const generateToken = (user, type = "auth") => {
   const payload = {
     id: user._id,
     first_name: user.first_name,
@@ -24,6 +24,7 @@ export const generateToken = (user) => {
     email: user.email,
     age: user.age,
     role: user.role,
+    type,
   };
 
   return jwt.sign(payload, config.jwtSecret, { expiresIn: "30m" });
@@ -35,11 +36,12 @@ export const authMiddleware = (strategy) => (req, res, next) => {
       return next(error);
     }
 
-    if (!payload) {
+    if (!payload || payload !== "auth") {
       return res
         .status(401)
         .json({ message: info.message ? info.message : info.toString() });
     }
+
     req.user = payload;
 
     next();

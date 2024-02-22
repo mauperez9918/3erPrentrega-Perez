@@ -98,6 +98,10 @@ router.get(
   }
 );
 
+router.get("/recoveryPass", (req, res) => {
+  res.render("recoveryPass", {});
+});
+
 router.get(
   "/chat",
   authMiddleware("jwt"),

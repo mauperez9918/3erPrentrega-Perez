@@ -4,6 +4,7 @@ import config from "../config/config.js";
 import { generateUserError } from "../utils/CauseMessageError.js";
 import { CustomError } from "../utils/CustomError.js";
 import EnumsError from "../utils/EnumsError.js";
+import EmailsService from "./email.service.js";
 
 export default class UsersService {
   static async register(userData) {
@@ -66,6 +67,24 @@ export default class UsersService {
     }
 
     return generateToken(user);
+  }
+
+  static async recoveryToken(userData) {
+    const { email } = userData;
+
+    const user = await UsersDao.findUserByEmail(email);
+
+    if (!user) {
+      throw new Error("El usuario no existe");
+    }
+
+    await EmailsService.sendEmail(
+      email,
+      "Link para recuperar tu contraseña",
+      "<h1>Aqui tienes tu link para recuperar tu contraseña</h1>"
+    );
+
+    return generateToken(user, "recovery");
   }
 
   static async githubcallback(data) {

@@ -4,7 +4,7 @@
   "main": "src/server",
   "type": "module",
   "scripts": {
-    "start": "node .",
+    "start": "node -r dotenv/config .",
     "dev": "nodemon --exec \"node -r dotenv/config\" ."
   },
   "keywords": [],
@@ -25,6 +25,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.1",
     "mongoose-paginate-v2": "^1.7.4",
+    "nodemailer": "^6.9.9",
     "passport": "^0.7.0",
     "passport-github2": "^0.1.12",
     "passport-jwt": "^4.0.1",

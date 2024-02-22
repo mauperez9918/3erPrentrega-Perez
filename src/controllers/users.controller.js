@@ -54,3 +54,18 @@ export const githubcallback = async (req, res) => {
     .status(200)
     .redirect("/products");
 };
+
+export const recoveryPassword = async (req, res) => {
+  try {
+    const recoveryToken = await UserService.recoveryToken(req.body);
+    res
+      .cookie("token", token, {
+        maxAge: 1000 * 60 * 60,
+        httpOnly: true,
+      })
+      .status(201)
+      .redirect("/login");
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+};

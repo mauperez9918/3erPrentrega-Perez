@@ -7,6 +7,7 @@ import {
   current,
   logout,
   githubcallback,
+  recoveryPassword,
 } from "../../controllers/users.controller.js";
 
 const router = Router();
@@ -30,5 +31,7 @@ router.post("/login", userLogin);
 router.get("/current", authMiddleware("jwt"), current);
 
 router.get("/logout", logout);
+
+router.post("recoveryPassword", recoveryPassword);
 
 export default router;
