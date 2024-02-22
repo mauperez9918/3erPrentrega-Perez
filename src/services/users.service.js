@@ -78,10 +78,11 @@ export default class UsersService {
       throw new Error("El usuario no existe");
     }
 
-    await EmailsService.sendEmail(
+    const emailService = new EmailsService();
+    const mail = await emailService.sendEmail(
       email,
       "Link para recuperar tu contraseña",
-      "<h1>Aqui tienes tu link para recuperar tu contraseña</h1>"
+      " http://localhost:8080/createPassword"
     );
 
     return generateToken(user, "recovery");
@@ -91,5 +92,16 @@ export default class UsersService {
     const token = generateToken(data);
 
     return token;
+  }
+
+  static async updateUser(user, body) {
+    const { password } = body;
+
+    if (!password) {
+      throw new Error("Contraseña invalida");
+    }
+
+    user.password = password;
+    return await UsersDao.updateUser(user, user._id);
   }
 }

@@ -102,6 +102,10 @@ router.get("/recoveryPass", (req, res) => {
   res.render("recoveryPass", {});
 });
 
+router.get("/createPassword", authMiddleware("jwt"), (req, res) => {
+  res.render("createPassword", {});
+});
+
 router.get(
   "/chat",
   authMiddleware("jwt"),

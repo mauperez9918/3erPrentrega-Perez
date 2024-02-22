@@ -25,9 +25,9 @@ export default class EmailsService {
   }
 
   static getInstance() {
-    if (!EmailsService.#instance) {
-      EmailsService.#instance = new EmailsService();
+    if (!this.#instance) {
+      this.#instance = new EmailsService();
     }
-    return EmailsService.#instance;
+    return this.#instance;
   }
 }
