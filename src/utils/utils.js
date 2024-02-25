@@ -27,7 +27,7 @@ export const generateToken = (user, type = "auth") => {
     type,
   };
 
-  return jwt.sign(payload, config.jwtSecret, { expiresIn: "30m" });
+  return jwt.sign(payload, config.jwtSecret, { expiresIn: "60m" });
 };
 
 export const authMiddleware = (strategy) => (req, res, next) => {
@@ -36,14 +36,14 @@ export const authMiddleware = (strategy) => (req, res, next) => {
       return next(error);
     }
 
-    if (payload.type === "recovery") {
-      return redirect.redirect("/createPassword");
-    }
-
     if (!payload) {
       return res
         .status(401)
         .json({ message: info.message ? info.message : info.toString() });
+    }
+
+    if (payload && payload.type !== "auth") {
+      return res.redirect("/createPassword:token");
     }
 
     req.user = payload;

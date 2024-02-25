@@ -78,14 +78,16 @@ export default class UsersService {
       throw new Error("El usuario no existe");
     }
 
+    const recoveryToken = generateToken(user, "recovery");
+
     const emailService = new EmailsService();
-    const mail = await emailService.sendEmail(
+    await emailService.sendEmail(
       email,
       "Link para recuperar tu contraseña",
-      " http://localhost:8080/createPassword"
+      `<p>Haga click en el siguiente link para poder recuperar su contraseña</p><a href=http://localhost:8080/api/auth/createPassword/${recoveryToken}>Haz click aqui para recuperar tu contraseña</a>`
     );
 
-    return generateToken(user, "recovery");
+    return recoveryToken;
   }
 
   static async githubcallback(data) {
@@ -94,7 +96,7 @@ export default class UsersService {
     return token;
   }
 
-  static async updateUser(user, body) {
+  static async recoveryPassword(user, body, params) {
     const { password } = body;
 
     if (!password) {

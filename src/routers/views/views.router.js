@@ -103,6 +103,9 @@ router.get("/recoveryPass", (req, res) => {
 });
 
 router.get("/createPassword", authMiddleware("jwt"), (req, res) => {
+  if (req.user.type !== "recovery") {
+    res.redirect("/");
+  }
   res.render("createPassword", {});
 });
 
