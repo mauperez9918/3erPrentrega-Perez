@@ -1,5 +1,10 @@
 import UsersDao from "../dao/users.dao.js";
-import { createHash, generateToken, isValidPassword } from "../utils/utils.js";
+import {
+  createHash,
+  generateToken,
+  isValidPassword,
+  verifyToken,
+} from "../utils/utils.js";
 import config from "../config/config.js";
 import { generateUserError } from "../utils/CauseMessageError.js";
 import { CustomError } from "../utils/CustomError.js";
@@ -69,6 +74,12 @@ export default class UsersService {
     return generateToken(user);
   }
 
+  static async githubcallback(data) {
+    const token = generateToken(data);
+
+    return token;
+  }
+
   static async recoveryToken(userData) {
     const { email } = userData;
 
@@ -84,26 +95,23 @@ export default class UsersService {
     await emailService.sendEmail(
       email,
       "Link para recuperar tu contraseña",
-      `<p>Haga click en el siguiente link para poder recuperar su contraseña</p><a href=http://localhost:8080/api/auth/createPassword/${recoveryToken}>Haz click aqui para recuperar tu contraseña</a>`
+      `<p>Haga click en el siguiente link para poder recuperar su contraseña</p><a href=http://localhost:8080/createPassword/${recoveryToken}>Haz click aqui para recuperar tu contraseña</a>`
     );
 
     return recoveryToken;
   }
 
-  static async githubcallback(data) {
-    const token = generateToken(data);
-
-    return token;
-  }
-
-  static async recoveryPassword(user, body, params) {
+  static async recoveryPassword(body, params) {
     const { password } = body;
+    const { token } = params;
 
-    if (!password) {
-      throw new Error("Contraseña invalida");
-    }
+    const userInfo = await verifyToken(token);
 
-    user.password = password;
-    return await UsersDao.updateUser(user, user._id);
+    // if (!password) {
+    //   throw new Error("Contraseña invalida");
+    // }
+
+    // user.password = password;
+    // return await UsersDao.updateUser(user, user._id);
   }
 }

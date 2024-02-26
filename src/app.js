@@ -14,10 +14,10 @@ import { addLogger } from "./config/logger.js";
 
 const app = express();
 
-app.use(addLogger);
-app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(addLogger);
+app.use(cookieParser());
 app.use(express.static(__dirname + "/public"));
 
 app.engine("handlebars", handlebars.engine());

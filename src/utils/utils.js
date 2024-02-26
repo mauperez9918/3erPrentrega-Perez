@@ -81,16 +81,16 @@ export const generateProduct = () => {
   };
 };
 
-// export const verifyToken = (token) => {
-//   return new Promise((resolve, reject) => {
-//     jwt.verify(token, config.jwtSecret, (error, payload) => {
-//       if (error) {
-//         return reject(false);
-//       }
-//       resolve(payload);
-//     });
-//   });
-// };
+export const verifyToken = (token) => {
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, config.jwtSecret, (error, payload) => {
+      if (error) {
+        return reject(false);
+      }
+      resolve(payload);
+    });
+  });
+};
 
 // const authToken = (req, res, next) => {
 //   const authHeader = req.headers.authorization;

@@ -33,7 +33,7 @@ router.get("/current", authMiddleware("jwt"), current);
 
 router.get("/logout", logout);
 
-router.post("/createPassword", authMiddleware("jwt"), createPassword);
+router.post("/createPassword/:token", createPassword);
 
 router.post("/recoveryPassword", recoveryPassword);
 

@@ -58,12 +58,7 @@ export const githubcallback = async (req, res) => {
 export const recoveryPassword = async (req, res) => {
   try {
     const recoveryToken = await UserService.recoveryToken(req.body);
-    res
-      .cookie("token", recoveryToken, {
-        maxAge: 1000 * 60 * 60,
-        httpOnly: true,
-      })
-      .status(201);
+    res.status(201).redirect("/");
   } catch (error) {
     res.status(500).json(error.message);
   }
@@ -71,7 +66,8 @@ export const recoveryPassword = async (req, res) => {
 
 export const createPassword = async (req, res) => {
   try {
-    await UserService.recoveryPassword(req.user, req.body, req.params);
+    console.log(req.body);
+    res.status(201).json(req.body);
   } catch (error) {
     res.status(500).json(error.message);
   }

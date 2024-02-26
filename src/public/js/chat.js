@@ -8,7 +8,6 @@ document.getElementById("form-message").addEventListener("submit", (e) => {
     username,
     message: input.value,
   };
-  console.log(input.value);
   socket.emit("new-message", newMessage);
   input.value = "";
   input.focus();

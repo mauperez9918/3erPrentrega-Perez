@@ -20,19 +20,24 @@ router.get("/pagination", getProductsPaginated);
 
 router.get("/:pid", getProductById);
 
-router.post("/", authMiddleware("jwt"), handlePolicies(["ADMIN"]), addProduct);
+router.post(
+  "/",
+  authMiddleware("jwt"),
+  handlePolicies(["ADMIN", "PREMIUM"]),
+  addProduct
+);
 
 router.put(
   "/:pid",
   authMiddleware("jwt"),
-  handlePolicies(["ADMIN"]),
+  handlePolicies(["ADMIN", "PREMIUM"]),
   updateProduct
 );
 
 router.delete(
   "/:pid",
   authMiddleware("jwt"),
-  handlePolicies(["ADMIN"]),
+  handlePolicies(["ADMIN", "PREMIUM"]),
   deleteById
 );
 
