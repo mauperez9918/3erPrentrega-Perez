@@ -67,6 +67,8 @@ export const recoveryPassword = async (req, res) => {
 export const createPassword = async (req, res) => {
   try {
     console.log(req.body);
+    await UserService.recoveryPassword(req.body, req.params);
+
     res.status(201).json(req.body);
   } catch (error) {
     res.status(500).json(error.message);

@@ -9,6 +9,7 @@ createPasswordForm.addEventListener("submit", (e) => {
 
   fetch(`http://localhost:8080/api/auth/createPassword/${recoveryToken}`, {
     method: "POST",
+    headers: "application/json",
     body: JSON.stringify({ password }),
   });
 
