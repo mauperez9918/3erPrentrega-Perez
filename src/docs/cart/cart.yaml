@@ -1,0 +1,106 @@
+paths:
+  /api/carts:
+    get:
+      summary: Listar los carritos
+      tags: ["Carts"]
+      responses:
+        200:
+          description: Los carritos fueron obtenidos exitosamente
+        500:
+          description: Ocurrio un error interno del servidor
+    post:
+      summary: Crear un carrito
+      tags: ["Carts"]
+      responses:
+        201:
+          description: El carrito ha sido creado correctamente
+        500:
+          description: Ocurrio un error interno del servidor
+
+  /api/carts/{cid}:
+    get:
+      summary: Obtener un carrito mediante su Id
+      tags: ["Carts"]
+      responses:
+        200:
+          description: El carrito ha sido obtenido correctamente.
+        500:
+          description: Ocurrio un error interno del servidor.
+
+  /api/carts/{cid}/products/{pid}:
+    get:
+      summary: Obtener un producto dentro de un carrito mediante sus Ids
+      tags: ["Carts"]
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: Id del carrito donde buscar.
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          description: Id del producto a buscar.
+          schema:
+            type: string
+      responses:
+        200:
+          description: El producto ha sido encontrado correctamente dentro del carrito
+        500:
+          description: Ocurrio un error interno del servidor
+    put:
+      summary: Actualizar un producto dentro de un carrito mediante sus Ids
+      tags: ["Carts"]
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: Id del carrito.
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          description: Id del producto a actualizar.
+          schema:
+            type: string
+      responses:
+        204:
+          description: La solicitud se completó con éxito
+        500:
+          description: Ocurrio un error interno del servidor
+    delete:
+      summary: Eliminar un producto dentro de un carrito mediante sus Ids
+      tags: ["Carts"]
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: Id del carrito.
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          description: Id del producto a eliminar.
+          schema:
+            type: string
+      responses:
+        204:
+          description: La solicitud se completó con éxito
+        500:
+          description: Ocurrio un error interno del servidor
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+        products:
+          type: array
+          description: Array de productos del carrito
+      example:
+        _id: 65b71ea7faa79caca46c8b12
+        products: []
