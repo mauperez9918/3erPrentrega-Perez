@@ -101,9 +101,10 @@ export default class UsersService {
     return recoveryToken;
   }
 
-  static async recoveryPassword(body, params) {
-    const { password } = body;
-    const { token } = params;
+  static async recoveryPassword(password, token) {
+    if (!token) {
+      throw new Error("No estas autenticado.");
+    }
 
     const userInfo = await verifyToken(token);
 

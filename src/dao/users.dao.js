@@ -1,4 +1,3 @@
-import userModel from "./models/user.model.js";
 import UserModel from "./models/user.model.js";
 
 export default class UsersDao {
@@ -10,7 +9,7 @@ export default class UsersDao {
     return UserModel.findOne({ email }).populate("cart");
   }
 
-  static updateUser(user, uid) {
-    userModel.findOne({ _id: uid }, { $set: user });
+  static updateUser(user, email) {
+    return UserModel.findOne({ email: email }, { $set: user });
   }
 }

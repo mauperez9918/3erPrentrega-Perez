@@ -1,30 +1,26 @@
 paths:
-
   /api/products:
     get:
       summary: Listar los productos
-      tags:
-        - Products
+      tags: ["Products"]
       responses:
         200:
           description: Los productos fueron obtenidos exitosamente
         500:
           description: Ocurrio un error interno del servidor
-    post: 
-     summary: Crear un producto
-     tags:
-      - Product
-     responses:
-      201:
-       description: El producto ha sido creado correctamente
-      500:  
-       description: Ocurrio un error interno del servidor
+    post:
+      summary: Crear un producto
+      tags: ["Products"]
+      responses:
+        201:
+          description: El producto ha sido creado correctamente
+        500:
+          description: Ocurrio un error interno del servidor
 
   /api/products/mockingproducts:
     get:
       summary: Testear productos
-      tags:
-        - Products
+      tags: ["Products"]
       responses:
         200:
           description: Los productos fueron generados exitosamente
@@ -34,87 +30,102 @@ paths:
   /api/products/pagination:
     get:
       summary: Paginar productos
-      tags: 
-      -Products
-       responses:
+      tags: ["Products"]
+      responses:
         200:
-         description: Paginar los productos
+          description: Paginar los productos
         500:
-         description: Ocurrio un error interno del servidor.
+          description: Ocurrio un error interno del servidor.
 
   /api/products/{pid}:
     get:
       summary: Obtener un producto mediante su Id
-      tags:
-       -Product
-       responses:
+      tags: ["Products"]
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          description: Id del producto a buscar.
+          schema:
+            type: string
+      responses:
         200:
-         description: El producto ha sido listado correctamente
+          description: El producto ha sido listado correctamente
         500:
-         description: Ocurrio un error interno del servidor
-    put: 
-     summary: Actualizar un producto mediante su Id     
-     tags:
-      - Product
+          description: Ocurrio un error interno del servidor
+    put:
+      summary: Actualizar un producto mediante su Id
+      tags: ["Products"]
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          description: Id del producto a buscar.
+          schema:
+            type: string
       responses:
-      204: 
-       description: Su producto ha sido actualizado correctamente
-      500:
-       descprition: Ocurrio un error interno del servidor
+        204:
+          description: La solicitud se completó con éxito
+        500:
+          description: Ocurrio un error interno del servidor
     delete:
-     summary: Eliminar un producto mediante su Id
-     tags: 
-      - Product
+      summary: Eliminar un producto mediante su Id
+      tags: ["Products"]
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          description: Id del producto a buscar.
+          schema:
+            type: string
       responses:
-      204:
-       description: Su producto ha sido eliminado correctamente
-      500: 
-       description: Ocurrio un error interno del servidorc
+        204:
+          description: La solicitud se completó con éxito
+        500:
+          description: Ocurrio un error interno del servidor
 components:
   schemas:
-   Product: 
-    type: object
-    properties:
-     _id:
-       type: string
-       description: Id autogenerado por la base de datos MongoDB.
-     title:
-       type: string
-       description: Nombre del producto.
-     description:
-       type: string
-       description: Descripción del producto.
-     price: 
-       type: number
-       description: Precio del producto.
-     thumbnail:
-       type: array
-       items: string
-       description: Imagenes del producto. 
-     code: 
-       type: string
-       description: Codigo del producto.
-     stock:
-       type: number
-       description: Cantidad de unidades en stock.    
-     category:
-       type: string
-       description: Categoría del producto.
-     status:
-       type: boolean
-       description: Estado del producto.
-     owner:
-       type: string
-       description: Quien es el creador del producto.
-    example:
-      _id: 65d6bb7e74bbdc6518c561d7
-      title: Honda Civic
-      description: Auto Honda
-      price: 1200
-      thumbnail: []
-      code: abc123
-      stock: 21
-      category: Cars
-      status: true
-      owner: admin
-          
+    Product:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id autogenerado por la base de datos MongoDB.
+        title:
+          type: string
+          description: Nombre del producto.
+        description:
+          type: string
+          description: Descripción del producto.
+        price:
+          type: number
+          description: Precio del producto.
+        thumbnail:
+          type: array
+          description: Imagenes del producto.
+        code:
+          type: string
+          description: Codigo del producto.
+        stock:
+          type: number
+          description: Cantidad de unidades en stock.
+        category:
+          type: string
+          description: Categoría del producto.
+        status:
+          type: boolean
+          description: Estado del producto.
+        owner:
+          type: string
+          description: Quien es el creador del producto.
+      example:
+        _id: 65d6bb7e74bbdc6518c561d7
+        title: Honda Civic
+        description: Auto Honda
+        price: 1200
+        thumbnail: []
+        code: abc123
+        stock: 21
+        category: Cars
+        status: true
+        owner: admin
