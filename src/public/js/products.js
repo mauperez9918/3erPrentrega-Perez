@@ -28,7 +28,7 @@ for (let button of addToCartButtons) {
   button.addEventListener("click", () => {
     const productId = button.dataset.id;
 
-    fetch(`./${userData.cart}/products/${productId}`, {
+    fetch(`./api/carts/${userData.cart}/products/${productId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     })
