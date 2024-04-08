@@ -17,7 +17,7 @@ export default class TicketService {
     await emailService.sendEmail(
       purchaser,
       "Aqui esta el codigo de su ticket de compra. Gracias por su preferencia!",
-      `<strong>Codigo: ${randomCode}</strong>`
+      `<strong>Comprador: ${purchaser}</strong><strong>Codigo: ${randomCode}</strong><strong>Monto a pagar: ${amount}</strong>`
     );
 
     return ticket;

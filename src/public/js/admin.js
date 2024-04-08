@@ -23,7 +23,7 @@ if (token) {
 
 switchBtn
   .addEventListener("click", () => {
-    fetch(`./api/users/premium/${userData._id}`, { method: "DELETE" });
+    fetch(`./api/users/premium/${userData._id}`, { method: "PUT" });
   })
   .then(() => {
     alert("Su producto ha sido eliminado.");

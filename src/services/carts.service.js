@@ -109,9 +109,11 @@ export default class CartsService {
     }
 
     cart.products.forEach(async (element) => {
-      element.product.stock = element.product.stock - element.quantity;
+      if (element.product.stock > 0) {
+        element.product.stock = element.product.stock - element.quantity;
 
-      await ProductDao.updateById(element.product._id, element.product);
+        await ProductDao.updateById(element.product._id, element.product);
+      }
     });
 
     const amount = filterProducts.reduce(
