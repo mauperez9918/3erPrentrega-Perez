@@ -1,3 +1,4 @@
+import e from "express";
 import CartsService from "../services/carts.service.js";
 
 export const getCarts = async (req, res) => {
@@ -71,7 +72,16 @@ export const updateInCartProduct = async (req, res) => {
 export const purchase = async (req, res) => {
   const { cart, email } = req.user;
   try {
-    await CartsService.purchase(cart, email);
+    const products = await CartsService.purchase(cart, email);
+    if (products) {
+      res
+        .status(200)
+        .json(
+          `Muchas gracias por su compra algunos productos no han podido incluirse en la compra por disponibilidad de stock: ${products.map(
+            (product) => product.title
+          )}`
+        );
+    }
     res.status(200).json("Muchas gracias por su compra");
   } catch (error) {
     res.status(500).json(error.message);

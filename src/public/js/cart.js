@@ -28,14 +28,8 @@ btnPurchase.addEventListener("click", () => {
   })
     .then((res) => res.json())
     .then((response) => {
-      if (response === "Muchas gracias por su compra") {
-        alert("Muchas gracias por su compra!");
-        location.reload();
-      } else {
-        alert(
-          "No se ha podido realizar tu compra por disponibilidad de stock."
-        );
-      }
+      alert(response);
+      location.reload();
     });
 });
 

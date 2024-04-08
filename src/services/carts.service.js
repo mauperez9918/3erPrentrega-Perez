@@ -122,14 +122,16 @@ export default class CartsService {
       0
     );
 
-    cart.products = [];
+    cart.products = cart.products.filterProducts(
+      (element) => element.product.stock < element.quantity
+    );
 
     await CartsDao.updateById(cid, cart);
 
-    try {
-      await TicketService.createTicket(amount, email);
-    } catch (error) {
-      console.error(error);
+    await TicketService.createTicket(amount, email);
+
+    if (cart.products > 0) {
+      return cart.products;
     }
   }
 }
