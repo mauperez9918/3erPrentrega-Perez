@@ -1,12 +1,13 @@
 import { Router } from "express";
-import ProductManager from "../../dao/product.dao.js";
-import CartManager from "../../dao/carts.dao.js";
+import Productsservice from "../../services/products.service.js";
 import { authMiddleware, handlePolicies } from "../../utils/utils.js";
+import CartsService from "../../services/carts.service.js";
+import UsersService from "../../services/user.service.js";
 
 const router = Router();
 
 router.get("/", (req, res) => {
-  if (req.user) {
+  if (req.cookies.token) {
     return res.redirect("/products");
   } else {
     res.render("login", { title: "Login" });
@@ -24,7 +25,7 @@ router.get("/register", (req, res) => {
 router.get(
   "/profile",
   authMiddleware("jwt"),
-  handlePolicies(["USER", "ADMIN"]),
+  handlePolicies(["USER", "ADMIN", "PREMIUM"]),
   async (req, res) => {
     if (!req.user) {
       return res.redirect("/");
@@ -40,59 +41,37 @@ router.get(
 router.get(
   "/products",
   authMiddleware("jwt"),
-  handlePolicies(["USER", "ADMIN"]),
+  handlePolicies(["USER", "ADMIN", "PREMIUM"]),
   async (req, res) => {
     if (!req.user) {
       return res.redirect("/");
     }
     const { limit = 10, page = 1, sort, category, status } = req.query;
-    const criteria = {};
-    const options = { limit, page };
-    if (sort) {
-      options.sort = { price: sort };
-    }
-
-    if (category) {
-      criteria.category = category;
-    }
-
-    if (status) {
-      criteria.status = status;
-    }
-
     const url = "http://localhost:8080/products";
-    const result = await ProductManager.getProductsPaginated(
-      criteria,
-      options,
-      sort,
-      category,
-      url,
-      status
-    );
 
-    if (isNaN(limit) || isNaN(page)) {
-      return res.status(404).json({
-        message:
-          "El caracter introducido como limit o page debe ser un numero.",
+    try {
+      const result = await Productsservice.getProductsPaginated(
+        limit,
+        page,
+        sort,
+        category,
+        url,
+        status
+      );
+
+      res.render("products", {
+        title: "Products",
+        ...result,
+        user: req.user,
       });
-    }
-
-    if (page > result.totalPages) {
-      return res.status(404).json({ message: "Esta pagina no existe" });
-    }
-
-    res.render("products", {
-      title: "Products",
-      ...result,
-      user: req.user,
-    });
+    } catch (error) {}
   }
 );
 
 router.get(
   "/realtimeproducts",
   authMiddleware("jwt"),
-  handlePolicies(["ADMIN"]),
+  handlePolicies(["ADMIN", "PREMIUM"]),
   (req, res) => {
     res.render("realTimeProducts", {});
   }
@@ -102,7 +81,7 @@ router.get("/recoveryPass", (req, res) => {
   res.render("recoveryPass", {});
 });
 
-router.get("/createPassword/:token", (req, res) => {
+router.get("/createPassword/:token", async (req, res) => {
   res.render("createPassword", {});
 });
 
@@ -115,12 +94,32 @@ router.get(
   }
 );
 
-router.get("/carts/:cid", async (req, res) => {
-  const { cid } = req.params;
-  const productsInCart = await CartManager.getProductsInCart(cid);
-  res.render("cart", {
-    products: productsInCart.map((product) => product.toJSON()),
-  });
+router.get("/cart", authMiddleware("jwt"), async (req, res) => {
+  try {
+    const { cart } = req.user;
+    const productsInCart = await CartsService.getProductsInCart(cart);
+    res.render("cart", {
+      products: productsInCart.map((product) => product.toJSON()),
+    });
+  } catch (error) {
+    res.render("error", {
+      messageError: error.message,
+      link: "/products",
+    });
+  }
 });
+
+router.get(
+  "/admin",
+  authMiddleware("jwt"),
+  handlePolicies(["ADMIN"]),
+  async (req, res) => {
+    const allUsers = await UsersService.getAllUsers();
+
+    res.render("admin", {
+      users: allUsers,
+    });
+  }
+);
 
 export default router;

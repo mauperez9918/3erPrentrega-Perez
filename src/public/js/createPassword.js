@@ -11,7 +11,17 @@ createPasswordForm.addEventListener("submit", (e) => {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ password }),
-  });
-
-  inputPassword.value = "";
+  })
+    .then((res) => res.json())
+    .catch((error) => console.error("Error:", error))
+    .then((response) => {
+      console.log(response);
+      if (response == "El token ha expirado o es invalido.") {
+        alert(response);
+        window.location.href = "/recoveryPass";
+      } else {
+        alert(response);
+        window.location.href = "/";
+      }
+    });
 });

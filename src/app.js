@@ -4,7 +4,7 @@ import ViewsRouter from "./routers/views/views.router.js";
 import productsApiRouter from "./routers/api/products.router.js";
 import cartsApiRouter from "./routers/api/carts.router.js";
 import authApiRouter from "./routers/api/auth.router.js";
-
+import usersApiRouter from "./routers/api/users.router.js";
 import handlebars from "express-handlebars";
 import path from "path";
 import cookieParser from "cookie-parser";
@@ -50,6 +50,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 app.use("/api/products", productsApiRouter);
 app.use("/api/carts", cartsApiRouter);
 app.use("/api/auth", authApiRouter);
+app.use("/api/users", usersApiRouter);
 app.use(errorHandlerMiddleware);
 
 export default app;

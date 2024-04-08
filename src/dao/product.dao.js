@@ -18,12 +18,7 @@ export default class ProductsDao {
   }
 
   static async deleteById(pid) {
-    try {
-      await productModel.deleteOne({ _id: pid });
-      console.log("El producto ha sido eliminado correctamente.");
-    } catch (error) {
-      console.error(`Ha ocurrido un error: ${error.message}`);
-    }
+    await productModel.deleteOne({ _id: pid });
   }
 
   static async getProductsPaginated(

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
-import { authMiddleware } from "../../utils/utils.js";
+import { authMiddleware, handlePolicies } from "../../utils/utils.js";
 import {
   userRegister,
   userLogin,
@@ -9,7 +9,7 @@ import {
   githubcallback,
   recoveryPassword,
   createPassword,
-} from "../../controllers/users.controller.js";
+} from "../../controllers/auth.controller.js";
 
 const router = Router();
 

@@ -7,6 +7,7 @@
     }}Usuario{{/unless}}</p>
   <p><strong>Edad:</strong> {{user.age}}</p>
   <a href="/profile" role="button">Ver perfil</a>
+  <a href="/cart" role="button">Ver Carrito</a>
 </div>
 
 <article style="padding: 20px;">
@@ -27,7 +28,7 @@
     <tbody>
       {{#each payload}}
         <tr>
-          <td>{{this.title}}</td>
+          <td>{{title}}</td>
           <td>{{this.description}}</td>
           <td>{{this.price}} USD</td>
           <td>{{this.thumbnail}}</td>
@@ -35,7 +36,8 @@
           <td>{{this.stock}}</td>
           <td>{{this.category}}</td>
           <td>{{this.status}}</td>
-          <td><button>Agregar al carrito</button></td>
+          <td><button class="addToCartBtn" data-id={{this._id}}>Agregar al
+              carrito</button></td>
         </tr>
       {{/each}}
     </tbody>

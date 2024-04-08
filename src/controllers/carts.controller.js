@@ -21,8 +21,9 @@ export const newCart = async (req, res) => {
 };
 
 export const getProductsInCart = async (req, res) => {
+  const { cid } = req.params;
   try {
-    const cart = await CartsService.getProductsInCart(req.params);
+    const cart = await CartsService.getProductsInCart(cid);
     res.status(200).json(cart);
   } catch (error) {
     res.status(500).json(error.message);
@@ -31,7 +32,7 @@ export const getProductsInCart = async (req, res) => {
 
 export const addProductToCart = async (req, res) => {
   try {
-    await CartsService.addProductToCart(req.params);
+    await CartsService.addProductToCart(req.params, req.user);
     res.status(201).json({
       message: "Su producto ha sido agregado al carrito correctamente",
     });
@@ -68,9 +69,10 @@ export const updateInCartProduct = async (req, res) => {
 };
 
 export const purchase = async (req, res) => {
+  const { cart, email } = req.user;
   try {
-    const ticket = await CartsService.purchase(req.body);
-    res.status(200).json(ticket);
+    await CartsService.purchase(cart, email);
+    res.status(200).json("Muchas gracias por su compra");
   } catch (error) {
     res.status(500).json(error.message);
   }

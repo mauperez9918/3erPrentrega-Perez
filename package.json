@@ -13,7 +13,10 @@
   "description": "primera practica integradora",
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
-    "nodemon": "^3.0.1"
+    "chai": "^5.1.0",
+    "mocha": "^10.3.0",
+    "nodemon": "^3.0.1",
+    "supertest": "^6.3.4"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

@@ -15,7 +15,7 @@ const router = Router();
 
 router.get("/", getCarts);
 
-router.get("/:cid/purchase", purchase);
+router.get("/purchase", authMiddleware("jwt"), purchase);
 
 router.post("/", newCart);
 
@@ -24,7 +24,7 @@ router.get("/:cid", getProductsInCart);
 router.post(
   "/:cid/products/:pid",
   authMiddleware("jwt"),
-  handlePolicies(["USER"]),
+  handlePolicies(["USER", "PREMIUM"]),
   addProductToCart
 );
 

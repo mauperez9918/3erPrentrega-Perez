@@ -18,9 +18,11 @@ export default class Productsservice {
     return product;
   }
 
-  static async addProduct(data) {
+  static async addProduct(newProductData, userData) {
     const { title, description, price, thumbnail, code, stock, category } =
-      data;
+      newProductData;
+    const { email, role } = userData;
+
     if (
       !title ||
       !description ||
@@ -32,35 +34,64 @@ export default class Productsservice {
     ) {
       CustomError.create({
         name: "Invalid product data",
-        cause: generateProductError(data),
+        cause: generateProductError(newProductData),
         message: "Ocurrio un error mientras intentamos crear el producto.",
         code: EnumsError.BAD_REQUEST_ERROR,
       });
     }
-    const product = await ProductsDao.addProduct(data);
+
+    if (role.toUpperCase() === "PREMIUM") {
+      newProductData.owner = email;
+    }
+
+    const product = await ProductsDao.addProduct(newProductData);
     console.log("Producto creado correctamente.");
     return product;
   }
 
-  static async updateProduct(params, data) {
+  static async updateProduct(params, UpdatedData, userData) {
     const { pid } = params;
+    const { role, email } = userData;
     const product = await ProductsDao.getById(pid);
 
     if (product) {
-      await ProductsDao.updateById(pid, data);
-      console.log("Producto actualizado correctamente.");
+      if (role.toUpperCase() === "ADMIN") {
+        await ProductsDao.updateById(pid, UpdatedData);
+        console.log("Producto actualizado correctamente.");
+      } else {
+        if (email !== product.owner) {
+          throw new Error("No esta autorizado para actualizar este producto.");
+        }
+
+        await ProductsDao.updateById(pid, UpdatedData);
+        console.log("Producto actualizado correctamente.");
+      }
     } else {
       throw new Error("Su producto no existe.");
     }
   }
 
-  static async deleteById(params) {
+  static async deleteById(params, userData) {
     const { pid } = params;
-    return await ProductsDao.deleteById(pid);
+    const { role, email } = userData;
+    const product = await ProductsDao.getById(pid);
+
+    if (email !== product.owner && role.toUpperCase() === "PREMIUM") {
+      throw new Error("No esta autorizado para eliminar este producto.");
+    }
+
+    await ProductsDao.deleteById(pid);
+    console.log("Producto ha sido eliminado correctamente.");
   }
 
-  static async getProductsPaginated() {
-    const { limit = 10, page = 1, sort, category } = req.query;
+  static async getProductsPaginated(
+    limit = 10,
+    page = 1,
+    sort,
+    category,
+    url,
+    status
+  ) {
     const criteria = {};
     const options = { limit, page };
     if (sort) {
@@ -69,13 +100,14 @@ export default class Productsservice {
     if (category) {
       criteria.category = category;
     }
-    const url = "http://localhost:8080/api/products/pagination";
+
     const result = await ProductsDao.getProductsPaginated(
       criteria,
       options,
       sort,
       category,
-      url
+      url,
+      status
     );
     return result;
   }

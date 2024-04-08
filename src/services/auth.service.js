@@ -10,10 +10,11 @@ import { generateUserError } from "../utils/CauseMessageError.js";
 import { CustomError } from "../utils/CustomError.js";
 import EnumsError from "../utils/EnumsError.js";
 import EmailsService from "./email.service.js";
+import CartsDao from "../dao/carts.dao.js";
 
-export default class UsersService {
+export default class AuthService {
   static async register(userData) {
-    const { first_name, last_name, email, password, age } = userData;
+    const { first_name, last_name, email, password, age, role } = userData;
 
     if (!first_name || !email || !password) {
       CustomError.create({
@@ -32,12 +33,16 @@ export default class UsersService {
 
     const hashedPass = createHash(password);
 
+    const userCart = await CartsDao.newCart();
+
     const newUser = {
       first_name: first_name,
       last_name: last_name,
       email: email,
       password: hashedPass,
       age: age,
+      cart: userCart._id,
+      role,
     };
 
     await UsersDao.createUser(newUser);
@@ -102,17 +107,44 @@ export default class UsersService {
   }
 
   static async recoveryPassword(password, token) {
-    if (!token) {
-      throw new Error("No estas autenticado.");
+    if (!password) {
+      throw new Error("Contraseña invalida");
     }
 
     const userInfo = await verifyToken(token);
 
-    // if (!password) {
-    //   throw new Error("Contraseña invalida");
-    // }
+    if (!userInfo) {
+      throw new Error("El token ha expirado o es invalido.");
+    }
 
-    // user.password = password;
-    // return await UsersDao.updateUser(user, user._id);
+    const user = await UsersDao.findUserByEmail(userInfo.email);
+
+    const notValidPassword = isValidPassword(user, password);
+
+    if (notValidPassword) {
+      throw new Error("La contraseña no puede haber sido usada anteriormente.");
+    }
+
+    const newPassword = createHash(password);
+
+    user.password = newPassword;
+
+    await UsersDao.updateUser(user, user.email);
+  }
+
+  static async switchRol(uid) {
+    const user = await UsersDao.findUserById(uid);
+
+    if (!user) {
+      throw new Error("El usuario no existe");
+    }
+
+    if (user.role.toUpperCase() === "PREMIUM") {
+      user.role = "USER";
+    } else if (user.role.toUpperCase() === "USER") {
+      user.role = "PREMIUM";
+    }
+
+    return await UsersDao.updateUserById(user, uid);
   }
 }

@@ -13,4 +13,8 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+UserSchema.pre("find", function () {
+  this.populate("cart");
+});
+
 export default mongoose.model("User", UserSchema);

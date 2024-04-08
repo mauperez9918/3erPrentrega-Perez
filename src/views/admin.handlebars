@@ -1,0 +1,20 @@
+<h1>Admin Panel</h1>
+<table>
+<th>Nombre</th>
+<th>Email</th>
+<th>Rol</th>
+
+  <tbody>
+    {{#each users}}
+      <tr>
+        <td>{{this.first_name}}</li>
+        <td>{{this.email}}</li>
+        <td>{{this.role}}</li>
+        <td><button class="switchRol">Cambiar rol</button></td>
+        <td><button class="deleteUser">Eliminar usuario</button></td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+<script>"/js/admin"</script>

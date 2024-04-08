@@ -20,7 +20,7 @@ export const getProductById = async (req, res) => {
 
 export const addProduct = async (req, res, next) => {
   try {
-    const product = await Productsservice.addProduct(req.body);
+    const product = await Productsservice.addProduct(req.body, req.user);
     res.status(201).json(product);
   } catch (error) {
     next(error);
@@ -29,7 +29,7 @@ export const addProduct = async (req, res, next) => {
 
 export const updateProduct = async (req, res) => {
   try {
-    await Productsservice.updateProduct(req.params, req.body);
+    await Productsservice.updateProduct(req.params, req.body, req.user);
     res.status(204).end();
   } catch (error) {
     res.status(500).json(error.message);
@@ -38,7 +38,7 @@ export const updateProduct = async (req, res) => {
 
 export const deleteById = async (req, res) => {
   try {
-    await Productsservice.deleteById(req.params);
+    await Productsservice.deleteById(req.params, req.user);
     res.status(204).end();
   } catch (error) {
     res.status(500).json(error.message);

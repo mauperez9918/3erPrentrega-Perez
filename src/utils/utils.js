@@ -10,11 +10,17 @@ const __filename = path.join(url.fileURLToPath(import.meta.url), "../");
 
 export const __dirname = path.dirname(__filename);
 
+// HashPassword Function //
+
 export const createHash = (password) =>
   bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
+// ValidatePassword Function //
+
 export const isValidPassword = (user, password) =>
   bcrypt.compareSync(password, user.password);
+
+// GenErate WebTokensFunction//
 
 export const generateToken = (user, type = "auth") => {
   const payload = {
@@ -24,11 +30,14 @@ export const generateToken = (user, type = "auth") => {
     email: user.email,
     age: user.age,
     role: user.role,
+    cart: user.cart,
     type,
   };
 
-  return jwt.sign(payload, config.jwtSecret, { expiresIn: "60m" });
+  return jwt.sign(payload, config.jwtSecret, { expiresIn: "30m" });
 };
+
+// Auth Middleware //
 
 export const authMiddleware = (strategy) => (req, res, next) => {
   passport.authenticate(strategy, function (error, payload, info) {
@@ -52,6 +61,8 @@ export const authMiddleware = (strategy) => (req, res, next) => {
   })(req, res, next);
 };
 
+// Handle Policies Function (ADMIN, USER, PREMIUM... OTHERS) //
+
 export const handlePolicies = (policies) => (req, res, next) => {
   if (policies.includes("PUBLIC")) {
     return next();
@@ -65,6 +76,8 @@ export const handlePolicies = (policies) => (req, res, next) => {
 
   next();
 };
+
+// Generate testing products with FakerJs //
 
 export const generateProduct = () => {
   return {
@@ -81,25 +94,15 @@ export const generateProduct = () => {
   };
 };
 
+// Verify Token Function //
 export const verifyToken = (token) => {
   return new Promise((resolve, reject) => {
     jwt.verify(token, config.jwtSecret, (error, payload) => {
       if (error) {
-        return reject(false);
+        reject(error);
+      } else {
+        resolve(payload);
       }
-      resolve(payload);
     });
   });
 };
-
-// const authToken = (req, res, next) => {
-//   const authHeader = req.headers.authorization;
-//   if (!authHeader) return res.status(401).send({ error: "Not authenticated" });
-//   const token = authHeader.split(" ")[1];
-//   jwt.verify(token, JWT_SECRET, (error, payload) => {
-//     if (error) return res.status(403).send({ error: "Not authorized" });
-
-//     res.user = payload;
-//     next();
-//   });
-// };

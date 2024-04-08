@@ -3,6 +3,7 @@ import { Strategy as GitHubStrategy } from "passport-github2";
 import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
 import userModel from "../dao/models/user.model.js";
 import config from "./config.js";
+import CartsService from "../services/carts.service.js";
 
 const cookieExtractor = (req) => {
   let token = null;
@@ -38,12 +39,14 @@ const initializePassport = () => {
           let user = await userModel.findOne({ email: profile._json.email });
 
           if (!user) {
+            const cart = await CartsService.newCart();
             let newUser = {
               first_name: profile._json.name,
               last_name: "",
               email: profile._json.email,
               password: "",
               age: "",
+              cart: cart._id,
             };
             let result = await userModel.create(newUser);
             return done(null, result);

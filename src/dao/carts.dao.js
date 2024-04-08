@@ -6,16 +6,26 @@ export default class CartsDao {
   }
 
   static async getCartById(cartId) {
-    return await cartModel.findById({ _id: cartId });
+    return await cartModel
+      .findById({ _id: cartId })
+      .populate("products.product");
+  }
+
+  static async newCart() {
+    return await cartModel.create({});
+  }
+
+  static async updateById(cid, data) {
+    return await cartModel.updateOne({ _id: cid }, { $set: data });
+  }
+
+  static async deleteProductCart(cartId, cart) {
+    return await cartModel.updateOne({ _id: cartId }, { $set: cart });
   }
 
   static async getProductsInCart(cartId) {
     const cart = await cartModel.findById(cartId).populate("products.product");
     return cart.products;
-  }
-
-  static async newCart() {
-    return await cartModel.create({});
   }
 
   static async addProductToCart(cartId, pid, productFound, cart) {
@@ -27,10 +37,6 @@ export default class CartsDao {
       productFound.quantity += 1;
       await cartModel.updateOne({ _id: cartId }, { $set: cart });
     }
-  }
-
-  static async deleteProductCart(cartId, cart) {
-    return await cartModel.updateOne({ _id: cartId }, { $set: cart });
   }
 
   static async updateProductQuantity(cartId, cart) {
@@ -46,9 +52,4 @@ export default class CartsDao {
       console.error(`Ha ocurrido un error: ${error.message}`);
     }
   }
-
-  // static async purchase(cid) {
-  //   let cart = await cartModel.findById(cid);
-  //   console.log(cart);
-  // }
 }

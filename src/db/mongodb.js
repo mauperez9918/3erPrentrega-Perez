@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import config from "../config/config.js";
 
 export const URI =
-  "mongodb+srv://developer:WE6Vgb7amm3V3NwG@cluster0.b2bk0bx.mongodb.net/ecommerce?retryWrites=true&w=majority";
+  "mongodb+srv://developer:lNqVJnKBDXc7bTAt@cluster0.b2bk0bx.mongodb.net/ecommerce?retryWrites=true&w=majority";
 
 export const init = async () => {
   try {
