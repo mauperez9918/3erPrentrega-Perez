@@ -122,7 +122,7 @@ export default class CartsService {
       0
     );
 
-    cart.products = cart.products.filterProducts(
+    cart.products = cart.products.filter(
       (element) => element.product.stock < element.quantity
     );
 
