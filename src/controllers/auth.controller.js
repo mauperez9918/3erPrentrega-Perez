@@ -49,7 +49,7 @@ export const githubcallback = async (req, res) => {
   res
     .cookie("token", token, {
       maxAge: 1000 * 60 * 30,
-      httpOnly: true,
+      httpOnly: false,
     })
     .status(200)
     .redirect("/products");
