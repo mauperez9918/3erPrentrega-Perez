@@ -74,7 +74,7 @@ export const purchase = async (req, res) => {
   try {
     const products = await CartsService.purchase(cart, email);
     if (products) {
-      res
+      return res
         .status(200)
         .json(
           `Muchas gracias por su compra algunos productos no han podido incluirse en la compra por disponibilidad de stock: ${products.map(
