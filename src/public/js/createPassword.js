@@ -7,7 +7,7 @@ createPasswordForm.addEventListener("submit", (e) => {
 
   const password = inputPassword.value;
 
-  fetch(`http://localhost:8080/api/auth/createPassword/${recoveryToken}`, {
+  fetch(`./api/auth/createPassword/${recoveryToken}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ password }),

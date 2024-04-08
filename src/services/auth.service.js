@@ -100,7 +100,7 @@ export default class AuthService {
     await emailService.sendEmail(
       email,
       "Link para recuperar tu contraseña",
-      `<p>Haga click en el siguiente link para poder recuperar su contraseña</p><a href=http://localhost:8080/createPassword/${recoveryToken}>Haz click aqui para recuperar tu contraseña</a>`
+      `<p>Haga click en el siguiente link para poder recuperar su contraseña</p><a href="https://proyecto-final-perez-production.up.railway.app/createPassword/${recoveryToken}">Haz click aqui para recuperar tu contraseña</a>`
     );
 
     return recoveryToken;

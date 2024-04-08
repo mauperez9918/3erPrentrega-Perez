@@ -23,7 +23,7 @@ if (token) {
 }
 
 btnPurchase.addEventListener("click", () => {
-  fetch(`http://localhost:8080/api/carts/purchase`, {
+  fetch(`./api/carts/purchase`, {
     method: "GET",
   })
     .then((res) => res.json())
@@ -43,12 +43,9 @@ for (let button of deleteButtons) {
   const productId = button.dataset.id;
 
   button.addEventListener("click", () => {
-    fetch(
-      `http://localhost:8080/api/carts/${userData.cart}/products/${productId}`,
-      {
-        method: "DELETE",
-      }
-    ).then(() => {
+    fetch(`./api/carts/${userData.cart}/products/${productId}`, {
+      method: "DELETE",
+    }).then(() => {
       alert("Su producto ha sido eliminado correctamente");
       location.reload();
     });

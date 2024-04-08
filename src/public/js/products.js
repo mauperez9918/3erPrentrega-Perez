@@ -28,13 +28,10 @@ for (let button of addToCartButtons) {
   button.addEventListener("click", () => {
     const productId = button.dataset.id;
 
-    fetch(
-      `http://localhost:8080/api/carts/${userData.cart}/products/${productId}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      }
-    )
+    fetch(`./${userData.cart}/products/${productId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    })
       .then((res) => res.json())
       .then((response) => alert(response.message))
       .catch((error) => console.error(error));

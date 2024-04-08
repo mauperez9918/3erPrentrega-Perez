@@ -47,7 +47,8 @@ router.get(
       return res.redirect("/");
     }
     const { limit = 10, page = 1, sort, category, status } = req.query;
-    const url = "http://localhost:8080/products";
+    const url =
+      "https://proyecto-final-perez-production.up.railway.app/products";
 
     try {
       const result = await Productsservice.getProductsPaginated(

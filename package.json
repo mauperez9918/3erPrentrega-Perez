@@ -4,7 +4,7 @@
   "main": "src/server",
   "type": "module",
   "scripts": {
-    "start": "node -r dotenv/config .",
+    "start": "node .",
     "dev": "nodemon --exec \"node -r dotenv/config\" ."
   },
   "keywords": [],
