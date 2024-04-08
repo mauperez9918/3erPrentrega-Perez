@@ -31,7 +31,7 @@ const initializePassport = () => {
     new GitHubStrategy(
       {
         clientID: "Iv1.30ed3de975e1ec27",
-        clientSecret: "cf781b394c2fdb7a5ae75ebef759d126186e19a2",
+        clientSecret: "1b3f3ae2f48ab4437c77b92e352393b57bfe13d1",
         callbackURL:
           "https://proyecto-final-perez-production.up.railway.app/api/auth/githubcallback",
       },

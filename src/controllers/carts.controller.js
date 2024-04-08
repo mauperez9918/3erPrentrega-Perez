@@ -73,7 +73,6 @@ export const purchase = async (req, res) => {
   const { cart, email } = req.user;
   try {
     const products = await CartsService.purchase(cart, email);
-    console.log(products);
     if (products) {
       return res
         .status(200)

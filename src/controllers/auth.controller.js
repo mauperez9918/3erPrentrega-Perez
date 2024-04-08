@@ -44,7 +44,7 @@ export const logout = async (req, res) => {
 export const github = async (req, res) => {};
 
 export const githubcallback = async (req, res) => {
-  const token = await AuthService.githubcallback(req.body);
+  const token = await AuthService.githubcallback(req.user);
 
   res
     .cookie("token", token, {
