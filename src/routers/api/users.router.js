@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { authMiddleware, handlePolicies } from "../../utils/utils.js";
 import {
-  deleteById,
+  deleteUser,
   getAllUsers,
   switchRole,
 } from "../../controllers/user.controller.js";
@@ -19,7 +19,9 @@ router.put(
 
 router.delete(
   "/:uid",
-  authMiddleware("jwt", handlePolicies(["ADMIN"], deleteById))
+  authMiddleware("jwt"),
+  handlePolicies(["ADMIN"]),
+  deleteUser
 );
 
 export default router;

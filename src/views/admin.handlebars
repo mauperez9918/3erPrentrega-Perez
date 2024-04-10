@@ -10,11 +10,11 @@
         <td>{{this.first_name}}</li>
         <td>{{this.email}}</li>
         <td>{{this.role}}</li>
-        <td><button class="switchRol">Cambiar rol</button></td>
-        <td><button class="deleteUser">Eliminar usuario</button></td>
+        <td><button class="switchRol" value={{this.email}}>Cambiar rol</button></td>
+        <td><button class="deleteUser" value={{this.email}}>Eliminar usuario</button></td>
       </tr>
     {{/each}}
   </tbody>
 </table>
 
-<script>"/js/admin"</script>
+<script src="/js/admin.js"></script>

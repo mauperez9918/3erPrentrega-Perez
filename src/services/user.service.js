@@ -8,8 +8,8 @@ export default class UserService {
     return getUserDto;
   }
 
-  static async switchRol(uid) {
-    const user = await UsersDao.findUserById(uid);
+  static async switchRol(userEmail) {
+    const user = await UsersDao.findUserByEmail(userEmail);
 
     if (!user) {
       throw new Error("El usuario no existe");
@@ -21,10 +21,16 @@ export default class UserService {
       user.role = "PREMIUM";
     }
 
-    return await UsersDao.updateUserById(user, uid);
+    return await UsersDao.updateUserById(user, user._id);
   }
 
-  static async deleteById(uid) {
-    return await UsersDao.deleteById(uid);
+  static async deleteUser(userEmail) {
+    const user = await UsersDao.findUserByEmail(userEmail);
+
+    if (!user) {
+      throw new Error("El usuario no puede ser eliminado ya que no existe");
+    }
+
+    return await UsersDao.deleteById(user._id);
   }
 }

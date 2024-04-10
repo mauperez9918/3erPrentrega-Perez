@@ -19,10 +19,11 @@ export const switchRole = async (req, res) => {
   }
 };
 
-export const deleteById = async (req, res) => {
-  const { uid } = req.user;
+export const deleteUser = async (req, res) => {
+  const { uid } = req.params;
+
   try {
-    await UserService.deleteById(uid);
+    await UserService.deleteUser(uid);
     res.status(203).end();
   } catch (error) {
     res.status(500).json(error.message);
