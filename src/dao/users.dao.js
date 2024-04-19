@@ -28,4 +28,8 @@ export default class UsersDao {
   static deleteById(id) {
     return UserModel.deleteOne({ _id: id });
   }
+
+  static deleteMany(users) {
+    return UserModel.deleteMany({ _id: { $in: users } });
+  }
 }

@@ -22,7 +22,7 @@ export default class CartsService {
       throw new Error("Su carrito esta vacio.");
     }
 
-    return await CartsDao.getProductsInCart(cid);
+    return cart.products;
   }
 
   static async addProductToCart(data, userData) {

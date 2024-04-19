@@ -69,7 +69,9 @@ export const createPassword = async (req, res) => {
   const { token } = req.params;
   try {
     await AuthService.recoveryPassword(password, token);
-    res.status(200).json("Su constraseña fue modificada con exito.");
+    res
+      .status(200)
+      .json({ message: "Su constraseña fue modificada con exito." });
   } catch (error) {
     res.status(500).json(error.message);
   }

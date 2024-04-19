@@ -9,6 +9,7 @@ const UserSchema = new mongoose.Schema(
     age: { type: Number },
     cart: { type: mongoose.Schema.Types.ObjectId, ref: "Cart" },
     role: { type: String, required: false, default: "user" },
+    last_connection: { type: Date, default: new Date() },
   },
   { timestamps: true }
 );

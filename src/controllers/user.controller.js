@@ -29,3 +29,12 @@ export const deleteUser = async (req, res) => {
     res.status(500).json(error.message);
   }
 };
+
+export const deleteInactiveUsers = async (req, res) => {
+  try {
+    await UserService.deleteInactiveUsers();
+    res.status(203).end();
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+};

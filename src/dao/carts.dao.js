@@ -23,11 +23,6 @@ export default class CartsDao {
     return await cartModel.updateOne({ _id: cartId }, { $set: cart });
   }
 
-  static async getProductsInCart(cartId) {
-    const cart = await cartModel.findById(cartId).populate("products.product");
-    return cart.products;
-  }
-
   static async addProductToCart(cartId, pid, productFound, cart) {
     if (!productFound) {
       cart.products.push({ product: pid });

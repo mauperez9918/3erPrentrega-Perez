@@ -2,6 +2,7 @@ import { Router } from "express";
 import { authMiddleware, handlePolicies } from "../../utils/utils.js";
 import {
   deleteUser,
+  deleteInactiveUsers,
   getAllUsers,
   switchRole,
 } from "../../controllers/user.controller.js";
@@ -22,6 +23,13 @@ router.delete(
   authMiddleware("jwt"),
   handlePolicies(["ADMIN"]),
   deleteUser
+);
+
+router.delete(
+  "/",
+  authMiddleware("jwt"),
+  handlePolicies(["ADMIN"]),
+  deleteInactiveUsers
 );
 
 export default router;

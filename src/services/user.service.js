@@ -33,4 +33,27 @@ export default class UserService {
 
     return await UsersDao.deleteById(user._id);
   }
+
+  static async deleteInactiveUsers() {
+    const users = await UsersDao.getAll();
+
+    const today = new Date();
+
+    const inactiveUsers = users.filter((elem) => {
+      const lastConnection = today - elem.last_connection;
+      return lastConnection >= 172800000;
+    });
+
+    await UsersDao.deleteMany(inactiveUsers);
+
+    const emailService = new EmailsService();
+
+    inactiveUsers.forEach(async (user) => {
+      await emailService.sendEmail(
+        user.email,
+        "Su usuario fue eliminado por inactividad",
+        `<strong>Usuario: ${user.email}</strong>`
+      );
+    });
+  }
 }

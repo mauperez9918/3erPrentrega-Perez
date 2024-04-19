@@ -76,6 +76,10 @@ export default class AuthService {
       throw new Error("Correo o contraseña invalidas");
     }
 
+    user.last_connection = new Date();
+
+    await UsersDao.updateUserById(user, user._id);
+
     return generateToken(user);
   }
 
@@ -107,10 +111,6 @@ export default class AuthService {
   }
 
   static async recoveryPassword(password, token) {
-    if (!password) {
-      throw new Error("Contraseña invalida");
-    }
-
     const userInfo = await verifyToken(token);
 
     if (!userInfo) {
@@ -130,21 +130,5 @@ export default class AuthService {
     user.password = newPassword;
 
     await UsersDao.updateUser(user, user.email);
-  }
-
-  static async switchRol(uid) {
-    const user = await UsersDao.findUserById(uid);
-
-    if (!user) {
-      throw new Error("El usuario no existe");
-    }
-
-    if (user.role.toUpperCase() === "PREMIUM") {
-      user.role = "USER";
-    } else if (user.role.toUpperCase() === "USER") {
-      user.role = "PREMIUM";
-    }
-
-    return await UsersDao.updateUserById(user, uid);
   }
 }
